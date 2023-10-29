@@ -1,2 +1,2 @@
 all:
-	g++ -O2 main.cpp
+	clang++ -std=c++2b -O2 -Wall main.cpp

@@ -28,9 +28,9 @@ const auto has_single_solution =
 // one verifier has to be redundant
 const auto has_redundant_information =
     [](const std::vector<verifier_t> &possible_verifier_combination) {
-      for (auto i = 0; i < possible_verifier_combination.size(); i += 1) {
+      for (size_t i = 0; i < possible_verifier_combination.size(); i += 1) {
         auto result = all_ones_mask;
-        for (auto j = 0; j < possible_verifier_combination.size(); j += 1) {
+        for (size_t j = 0; j < possible_verifier_combination.size(); j += 1) {
           if (i == j) {
             continue;
           }

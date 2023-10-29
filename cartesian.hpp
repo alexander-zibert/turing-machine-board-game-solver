@@ -5,7 +5,7 @@
 template <typename T, typename Consumer>
 void cartesianProduct(const std::vector<std::vector<T>> &arrays,
                       Consumer consumer) {
-  std::vector<int> currentIdx(arrays.size(), 0);
+  std::vector<size_t> currentIdx(arrays.size(), 0);
   std::vector<T> current(arrays.size());
 
   while (true) {
