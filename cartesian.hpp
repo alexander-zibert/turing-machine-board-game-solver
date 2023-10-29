@@ -5,6 +5,13 @@
 template <typename T, typename Consumer>
 void cartesianProduct(const std::vector<std::vector<T>> &arrays,
                       Consumer consumer) {
+  // there is no possible combination if any array has no elements
+  for (const auto &arr : arrays) {
+    if (arr.size() == 0) {
+      return;
+    }
+  }
+
   std::vector<size_t> currentIdx(arrays.size(), 0);
   std::vector<T> current(arrays.size());
 

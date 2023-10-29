@@ -27,3 +27,11 @@ TEST_CASE("testing the cartesianProduct function with strings") {
   CHECK(result[2] == std::vector<std::string>{"B", "C", "E"});
   CHECK(result[3] == std::vector<std::string>{"B", "D", "E"});
 }
+
+TEST_CASE("testing an empty list") {
+  auto result = std::vector<std::vector<int>>{};
+  cartesianProduct<int>({{1, 2}, {}}, [&result](const std::vector<int> &comb) {
+    result.push_back(comb);
+  });
+  CHECK(result.size() == 0);
+}
