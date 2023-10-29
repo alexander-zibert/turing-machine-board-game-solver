@@ -184,3 +184,17 @@ const auto c48 = card_t{blue_less_than_yellow,     blue_equal_to_yellow,
 
 // card XX
 const auto v = verifier_t{"", [](const code_t &code) { return true; }};
+
+const auto all_cards = []() {
+  auto result = std::vector<card_t>{49};
+  result[2] = c2;
+  result[12] = c12;
+  result[16] = c16;
+  result[23] = c23;
+  result[24] = c24;
+  result[33] = c33;
+  result[35] = c35;
+  result[45] = c45;
+  result[48] = c48;
+  return result;
+}();

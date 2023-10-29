@@ -8,7 +8,18 @@ This is a solver for the board game:
 
 ## Building
 
+### CLI Build
+
 Just run `make` in the root directory. Then you can run the binary `./a.out`.
+
+### WASM Build
+
+The WASM build requires a working [emscripten toolchain](https://emscripten.org/docs/getting_started/downloads.html#installation-instructions-using-the-emsdk-recommended).
+
+Afterwards, you can run `make wasm` to build.
+
+Next, you need to serve these files. You can run `python -m http.server 9000` in the root directory to serve the files with a simple python http server.
+Then, the frontend is accessible under `http://localhost:9000/frontend/`. As of now there only is some output in the JS console.
 
 ## Tests
 

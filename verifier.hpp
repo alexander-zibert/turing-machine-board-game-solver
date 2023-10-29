@@ -5,7 +5,6 @@
 #include <cmath>
 #include <cstdint>
 #include <functional>
-#include <iostream>
 #include <string>
 
 #include "code.hpp"
