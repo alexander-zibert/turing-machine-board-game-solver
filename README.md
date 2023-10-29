@@ -3,6 +3,7 @@
 This is a solver for the board game:
 
 - [Online App](https://turingmachine.info/)
+- [Play online on Board Game Arena](https://en.boardgamearena.com/gamepanel?game=turingmachine)
 - [Board Game Geek Entry](https://boardgamegeek.com/boardgame/356123/turing-machine)
 
 ## Building
