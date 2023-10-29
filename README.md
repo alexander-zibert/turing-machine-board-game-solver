@@ -9,6 +9,10 @@ This is a solver for the board game:
 
 Just run `make` in the root directory. Then you can run the binary `./a.out`.
 
+## Tests
+
+Run `make doctest` in the root directory. Then you can run the binary `./test.out`.
+
 ## Progress
 
 - [x] Initial deductions before the game
