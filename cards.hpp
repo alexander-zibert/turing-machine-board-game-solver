@@ -27,6 +27,35 @@ const auto yellow_greater_than_four = verifier_t{
 const auto c4 = card_t{yellow_less_than_four, yellow_equal_to_four,
                        yellow_greater_than_four};
 
+// card 7
+const auto purple_is_even = verifier_t{
+    "purple_is_even", [](const code_t &code) { return code[2] % 2 == 0; }};
+const auto purple_is_odd = verifier_t{
+    "purple_is_odd", [](const code_t &code) { return code[2] % 2 != 0; }};
+const auto c7 = card_t{purple_is_even, purple_is_odd};
+
+// card 8
+const auto count_number = [](const code_t &code, uint8_t number) {
+  auto result = 0;
+  for (const auto el : code) {
+    if (el == number) {
+      result += 1;
+    }
+  }
+  return result;
+};
+
+const auto zero_ones = verifier_t{
+    "zero_ones", [](const code_t &code) { return count_number(code, 1) == 0; }};
+const auto one_one = verifier_t{
+    "one_one", [](const code_t &code) { return count_number(code, 1) == 1; }};
+const auto two_ones = verifier_t{
+    "two_ones", [](const code_t &code) { return count_number(code, 1) == 2; }};
+const auto three_ones = verifier_t{"three_ones", [](const code_t &code) {
+                                     return count_number(code, 1) == 3;
+                                   }};
+const auto c8 = card_t{zero_ones, one_one, two_ones, three_ones};
+
 // card 12
 const auto blue_less_than_purple =
     verifier_t{"blue_less_than_purple",
@@ -39,6 +68,21 @@ const auto blue_greater_than_purple =
                [](const code_t &code) { return code[0] > code[2]; }};
 const auto c12 = card_t{blue_less_than_purple, blue_equal_to_purple,
                         blue_greater_than_purple};
+
+// card 15
+const auto blue_largest =
+    verifier_t{"blue_largest", [](const code_t &code) {
+                 return code[0] > code[1] && code[0] > code[2];
+               }};
+const auto yellow_largest =
+    verifier_t{"yellow_largest", [](const code_t &code) {
+                 return code[1] > code[0] && code[1] > code[2];
+               }};
+const auto purple_largest =
+    verifier_t{"purple_largest", [](const code_t &code) {
+                 return code[2] > code[0] && code[2] > code[1];
+               }};
+const auto c15 = card_t{blue_largest, yellow_largest, purple_largest};
 
 // card 16
 const auto even_greater_odd_verifier_factory = [](const code_t &code) {
@@ -57,6 +101,21 @@ const auto odd_greater_even =
                  return !even_greater_odd_verifier_factory(code);
                }};
 const auto c16 = card_t{even_greater_odd, odd_greater_even};
+
+// card 22
+const auto three_asc =
+    verifier_t{"three_asc", [](const code_t &code) {
+                 return code[0] < code[1] && code[1] < code[2];
+               }};
+const auto three_desc =
+    verifier_t{"three_desc", [](const code_t &code) {
+                 return code[0] > code[1] && code[1] > code[2];
+               }};
+const auto no_three_asc_desc =
+    verifier_t{"no_three_asc_desc", [](const code_t &code) {
+                 return !three_asc.isValid(code) && !three_desc.isValid(code);
+               }};
+const auto c22 = card_t{three_asc, three_desc, no_three_asc_desc};
 
 // card 23
 const auto sum = [](const code_t &code) {
@@ -101,10 +160,6 @@ const auto yellow_is_even = verifier_t{
     "yellow_is_even", [](const code_t &code) { return code[1] % 2 == 0; }};
 const auto yellow_is_odd = verifier_t{
     "yellow_is_odd", [](const code_t &code) { return code[1] % 2 != 0; }};
-const auto purple_is_even = verifier_t{
-    "purple_is_even", [](const code_t &code) { return code[2] % 2 == 0; }};
-const auto purple_is_odd = verifier_t{
-    "purple_is_odd", [](const code_t &code) { return code[2] % 2 != 0; }};
 const auto c33 = card_t{
     blue_is_even,  blue_is_odd,    yellow_is_even,
     yellow_is_odd, purple_is_even, purple_is_odd,
@@ -127,23 +182,6 @@ const auto c35 = card_t{blue_largest_or_equal, yellow_largest_or_equal,
                         purple_largest_or_equal};
 
 // card 45
-const auto count_number = [](const code_t &code, uint8_t number) {
-  auto result = 0;
-  for (const auto el : code) {
-    if (el == number) {
-      result += 1;
-    }
-  }
-  return result;
-};
-
-const auto zero_ones = verifier_t{
-    "zero_ones", [](const code_t &code) { return count_number(code, 1) == 0; }};
-const auto one_one = verifier_t{
-    "one_one", [](const code_t &code) { return count_number(code, 1) == 1; }};
-const auto two_ones = verifier_t{
-    "two_ones", [](const code_t &code) { return count_number(code, 1) == 2; }};
-
 const auto zero_threes = verifier_t{"zero_threes", [](const code_t &code) {
                                       return count_number(code, 3) == 0;
                                     }};
@@ -188,8 +226,12 @@ const auto v = verifier_t{"", [](const code_t &code) { return true; }};
 const auto all_cards = []() {
   auto result = std::vector<card_t>{49};
   result[2] = c2;
+  result[7] = c7;
+  result[8] = c8;
   result[12] = c12;
+  result[15] = c15;
   result[16] = c16;
+  result[22] = c22;
   result[23] = c23;
   result[24] = c24;
   result[33] = c33;
