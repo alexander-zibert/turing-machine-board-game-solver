@@ -1,7 +1,10 @@
 # Turing Machine Solver
 
-This is a solver for the board game:
+This is a solver for the board game "Turing Machine".
 
+Credits/links:
+
+- [Frontend Code forked from zyle87](https://github.com/zyle87/turing-machine-interactive-sheet)
 - [Online App](https://turingmachine.info/)
 - [Play online on Board Game Arena](https://en.boardgamearena.com/gamepanel?game=turingmachine)
 - [Board Game Geek Entry](https://boardgamegeek.com/boardgame/356123/turing-machine)

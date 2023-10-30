@@ -1,4 +1,16 @@
-function main(Module) {
+// import { StrictMode } from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+
+root.render(
+  // <StrictMode>
+  <App />
+  // </StrictMode>
+)
+
+function main(Module: any) {
   const { memory, solve_wasm } = Module.asm;
   console.log(memory.buffer);
   const numCards = 6;
@@ -14,7 +26,7 @@ function main(Module) {
 
   const start = new Date();
   solve_wasm(input.byteOffset, output.byteOffset);
-  console.log("Solving took", new Date() - start, "ms");
+  console.log("Solving took", new Date().valueOf() - start.valueOf(), "ms");
   offset = 0;
   const numCodes = output[offset];
   offset += 1;
@@ -27,7 +39,7 @@ function main(Module) {
   }
   console.log(codes);
 
-  const possibleVerifiers = [];
+  const possibleVerifiers: number[][] = [];
   for (let i = 0; i < numCards; i += 1) {
     const numVerifiers = output[offset];
     offset += 1;
@@ -40,7 +52,7 @@ function main(Module) {
   }
   console.log(possibleVerifiers);
 
-  const possibleLetters = [];
+  const possibleLetters: number[][] = [];
   for (let i = 0; i < numCards; i += 1) {
     const numLetters = output[offset];
     offset += 1;
@@ -54,27 +66,27 @@ function main(Module) {
   console.log(possibleLetters);
 }
 
-window.Module = {
+const Module = {
   preRun: [],
   postRun: [main],
   print: (function () {
-    return function (text) {
+    return function (text: string) {
       console.log(text);
     };
   })(),
-  setStatus: (text) => {
-    if (!Module.setStatus.last)
-      Module.setStatus.last = { time: Date.now(), text: "" };
-    if (text === Module.setStatus.last.text) return;
-    var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-    var now = Date.now();
-    if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
-    Module.setStatus.last.time = now;
-    Module.setStatus.last.text = text;
+  setStatus(text: string) {
+    // if (!Module.setStatus.last)
+    //   Module.setStatus.last = { time: Date.now(), text: "" };
+    // if (text === Module.setStatus.last.text) return;
+    // var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+    // var now = Date.now();
+    // if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+    // Module.setStatus.last.time = now;
+    // Module.setStatus.last.text = text;
     console.log(text);
   },
   totalDependencies: 0,
-  monitorRunDependencies: (left) => {
+  monitorRunDependencies(left: number) {
     this.totalDependencies = Math.max(this.totalDependencies, left);
     Module.setStatus(
       left
@@ -91,8 +103,8 @@ Module.setStatus("Downloading...");
 window.onerror = (event) => {
   // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
   Module.setStatus("Exception thrown, see JavaScript console");
-  spinnerElement.style.display = "none";
   Module.setStatus = (text) => {
     if (text) console.error("[post-exception status] " + text);
   };
 };
+(window as any).Module = Module;

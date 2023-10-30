@@ -2,3 +2,5 @@
 /.vscode
 /test.out
 /build
+wasmWrapper.js
+wasmWrapper.wasm
