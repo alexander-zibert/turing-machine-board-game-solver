@@ -18,10 +18,10 @@ extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
   offset += 1;
 
   auto queries = std::vector<query_t>{numQueries};
-  for (size_t i = 0; i < numQueries; numQueries += 1) {
-    queries.push_back({{input[offset], input[offset + 1], input[offset + 2]},
-                       (char)input[offset + 3],
-                       (bool)input[offset + 4]});
+  for (size_t i = 0; i < numQueries; i += 1) {
+    queries[i] = query_t{{input[offset], input[offset + 1], input[offset + 2]},
+                         (char)input[offset + 3],
+                         (bool)input[offset + 4]};
     offset += 5;
   }
 
@@ -52,7 +52,7 @@ extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
     output[offset] = (uint8_t)possibleMatch.size();
     offset += 1;
     for (auto letter : possibleMatch) {
-      output[offset] = letter - 'A';
+      output[offset] = letter;
       offset += 1;
     }
   }
