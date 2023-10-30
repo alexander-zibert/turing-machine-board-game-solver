@@ -35,4 +35,4 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [x] Deductions based on machine answers
 - [ ] Implement all cards and verifiers
 - [ ] Algorithm documentation
-- [ ] Use the [Turing Machine Interactive Sheet](https://github.com/zyle87/turing-machine-interactive-sheet) as frontend with this solver as WASM module
+- [x] Use the [Turing Machine Interactive Sheet](https://github.com/zyle87/turing-machine-interactive-sheet) as frontend with this solver as WASM module
