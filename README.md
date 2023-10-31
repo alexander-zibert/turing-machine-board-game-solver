@@ -39,6 +39,7 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [ ] Implement letter checkboxes in the frontend
 - [ ] Implement normal and extreme mode
 - [ ] Check letter combinations
+- [ ] Verify queries (warn if no code is possible)
 - [ ] Deploy on github pages
 - [ ] Use web workers to not block the main thread
 - [ ] Implement puzzle generation
