@@ -37,5 +37,9 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [ ] Algorithm documentation
 - [x] Use the [Turing Machine Interactive Sheet](https://github.com/zyle87/turing-machine-interactive-sheet) as frontend with this solver as WASM module
 - [ ] Implement letter checkboxes in the frontend
+- [ ] Implement normal and extreme mode
 - [ ] Check letter combinations
 - [ ] Deploy on github pages
+- [ ] Use web workers to not block the main thread
+- [ ] Implement puzzle generation
+- [ ] Use service workers for an offline experience
