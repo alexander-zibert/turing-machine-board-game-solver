@@ -33,7 +33,7 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [x] Initial deductions before the game
 - [x] Basic CLI usage
 - [x] Deductions based on machine answers
-- [ ] Implement all cards and verifiers
+- [x] Implement all cards and verifiers
 - [ ] Algorithm documentation
 - [x] Use the [Turing Machine Interactive Sheet](https://github.com/zyle87/turing-machine-interactive-sheet) as frontend with this solver as WASM module
 - [ ] Implement letter checkboxes in the frontend
