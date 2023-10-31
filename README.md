@@ -44,3 +44,4 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [ ] Use web workers to not block the main thread
 - [ ] Implement puzzle generation
 - [ ] Use service workers for an offline experience
+- [ ] Add tests based on [known puzzles + solutions](https://boardgamegeek.com/filepage/251409/book-8500-problems-offline-or-analog-use)
