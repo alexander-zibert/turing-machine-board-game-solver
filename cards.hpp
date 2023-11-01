@@ -448,7 +448,7 @@ const auto yellow_plus_purple_equal_to_six =
     verifier_t{"yellow_plus_purple_equal_to_six",
                [](const code_t &code) { return code[1] + code[2] == 6; }};
 const auto c38 =
-    card_t{blue_plus_yellow_equal_to_six, blue_plus_yellow_equal_to_six,
+    card_t{blue_plus_yellow_equal_to_six, blue_plus_purple_equal_to_six,
            yellow_plus_purple_equal_to_six};
 
 // card 39
