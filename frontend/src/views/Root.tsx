@@ -199,7 +199,7 @@ const Root: FC = () => {
             </IconButton>
             <IconButton
               aria-label="github"
-              href="https://github.com/accuzyle/turing-machine-interactive-sheet"
+              href="https://github.com/alexander-zibert/turing-machine-board-game-solver"
               target="_blank"
             >
               <GitHubIcon />
