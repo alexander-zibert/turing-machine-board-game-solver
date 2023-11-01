@@ -71,23 +71,22 @@ const getCardUrl = (card?: CriteriaCard) =>
 
 export const useCriteriaCard = (verifier: Verifier, index: number) => {
   const comments = useAppSelector((state) => state.comments);
-  const getComment = (verifier: Verifier) =>
-    comments.find((comment) => comment.verifier === verifier);
+  const comment = comments.find((comment) => comment.verifier === verifier);
 
   const [card, setCard] = useState<Undefinable<CriteriaCard>>(
-    getComment(verifier)?.criteriaCards[index]
+    comment?.criteriaCards[index]
   );
   const [letters, setLetters] = useState<Undefinable<Letter[]>>(
-    getComment(verifier)?.letters
+    comment?.letters
   );
 
   useEffect(() => {
-    setCard(getComment(verifier)?.criteriaCards[index]);
-  }, [comments, index, verifier]);
+    setCard(comment?.criteriaCards[index]);
+  }, [comments, comment, index, verifier]);
 
   useEffect(() => {
-    setLetters(getComment(verifier)?.letters);
-  }, [comments, verifier]);
+    setLetters(comment?.letters);
+  }, [comments, comment, verifier]);
 
   const dispatch = useAppDispatch();
 
@@ -132,7 +131,7 @@ export const useCriteriaCard = (verifier: Verifier, index: number) => {
       })
     );
   };
-  useEffect(() => {
+  useUpdateEffect(() => {
     dispatch(commentsActions.updateLetters({ verifier, letters }));
   }, [letters]);
 
