@@ -1,54 +1,54 @@
-import SolvedIcon from '@mui/icons-material/CheckRounded'
-import UnsolvedIcon from '@mui/icons-material/CloseRounded'
-import DeleteIcon from '@mui/icons-material/UndoRounded'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Grid from '@mui/material/Grid'
-import { alpha, useTheme } from '@mui/material/styles'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { FC } from 'react'
-import { RoundsState, roundsActions } from 'store/slices/roundsSlice'
-import ShapeIcon from './ShapeIcon'
-import SingleCharLabel from './SingleCharLabel'
-import TextField from './TextField'
+import SolvedIcon from "@mui/icons-material/CheckRounded";
+import UnsolvedIcon from "@mui/icons-material/CloseRounded";
+import DeleteIcon from "@mui/icons-material/UndoRounded";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import { alpha, useTheme } from "@mui/material/styles";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { FC } from "react";
+import { RoundsState, roundsActions } from "store/slices/roundsSlice";
+import ShapeIcon from "./ShapeIcon";
+import SingleCharLabel from "./SingleCharLabel";
+import TextField from "./TextField";
 
 type Props = {
-  round: RoundsState[number]
-  index: number
-}
+  round: RoundsState[number];
+  index: number;
+};
 
 const Round: FC<Props> = ({ round, index }) => {
-  const dispatch = useAppDispatch()
-  const theme = useTheme()
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   return (
     <Box>
       <Grid container spacing={0.5}>
-        {round.code.map(code => (
+        {round.code.map((code) => (
           <Grid key={code.shape} item xs={4}>
             <TextField
               prefixId={`rounds__round-${index + 1}-${code.shape}`}
               customRadius={
-                code.shape !== 'square'
-                  ? code.shape === 'triangle'
+                code.shape !== "square"
+                  ? code.shape === "triangle"
                     ? theme.spacing(2, 0, 0, 0)
                     : theme.spacing(0, 2, 0, 0)
                   : undefined
               }
               value={code.digit}
-              onChange={value => {
+              onChange={(value) => {
                 dispatch(
                   roundsActions.updateCodeDigit({
                     index,
                     shape: code.shape,
                     digit: value ? (Number(value) as Digit) : null,
-                  })
-                )
+                  }),
+                );
               }}
               iconRender={
                 <ShapeIcon
-                  shape={code.shape as 'triangle' | 'square' | 'circle'}
+                  shape={code.shape as "triangle" | "square" | "circle"}
                   sizeMultiplier={0.5}
                 />
               }
@@ -59,7 +59,7 @@ const Round: FC<Props> = ({ round, index }) => {
       </Grid>
       <Box mt={0.5}>
         <Grid container spacing={0.5}>
-          {round.queries.map(query => (
+          {round.queries.map((query) => (
             <Grid item xs={2} key={query.verifier}>
               <Button
                 id={`rounds__round-${
@@ -67,17 +67,17 @@ const Round: FC<Props> = ({ round, index }) => {
                 }-verifier-${query.verifier.toLowerCase()}-button`}
                 arial-label={query.verifier}
                 sx={{
-                  minWidth: '100%',
+                  minWidth: "100%",
                   p: 0,
                   background:
-                    query.verifier === 'E' || query.verifier === 'F'
+                    query.verifier === "E" || query.verifier === "F"
                       ? alpha(theme.palette.primary.main, 0.1)
                       : null,
                   borderRadius: theme.spacing(
                     0,
                     0,
-                    query.verifier === 'F' ? 2 : 0,
-                    query.verifier === 'A' ? 2 : 0
+                    query.verifier === "F" ? 2 : 0,
+                    query.verifier === "A" ? 2 : 0,
                   ),
                 }}
                 onClick={() => {
@@ -85,18 +85,18 @@ const Round: FC<Props> = ({ round, index }) => {
                     roundsActions.updateQueryState({
                       index,
                       verifier: query.verifier,
-                    })
-                  )
+                    }),
+                  );
                 }}
               >
                 <Box width={1}>
                   <Box
                     pt={1}
                     sx={{
-                      textAlign: 'center',
+                      textAlign: "center",
 
                       borderRadius:
-                        query.verifier === 'F'
+                        query.verifier === "F"
                           ? theme.spacing(0, 0, 2, 0)
                           : null,
                     }}
@@ -109,7 +109,7 @@ const Round: FC<Props> = ({ round, index }) => {
                         width={20}
                         sx={{
                           borderWidth: 2,
-                          borderStyle: 'solid',
+                          borderStyle: "solid",
                           borderColor: theme.palette.primary.main,
                           borderRadius: theme.spacing(0.5),
                         }}
@@ -120,10 +120,10 @@ const Round: FC<Props> = ({ round, index }) => {
                         left={3}
                         sx={{ color: theme.palette.text.primary }}
                       >
-                        {query.state === 'solved' && (
+                        {query.state === "solved" && (
                           <SolvedIcon fontSize="large" />
                         )}
-                        {query.state === 'unsolved' && (
+                        {query.state === "unsolved" && (
                           <UnsolvedIcon fontSize="large" />
                         )}
                       </Box>
@@ -145,7 +145,7 @@ const Round: FC<Props> = ({ round, index }) => {
               fullWidth
               size="small"
               onClick={() => {
-                dispatch(roundsActions.deleteRound(index))
+                dispatch(roundsActions.deleteRound(index));
               }}
             >
               <DeleteIcon />
@@ -157,7 +157,7 @@ const Round: FC<Props> = ({ round, index }) => {
         <Divider />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Round
+export default Round;

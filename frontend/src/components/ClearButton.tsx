@@ -1,15 +1,15 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import { FC, ReactNode } from 'react'
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import { FC, ReactNode } from "react";
 
 type Props = {
-  prefixId: string
-  iconRender: ReactNode
-  onClick: () => void
-}
+  prefixId: string;
+  iconRender: ReactNode;
+  onClick: () => void;
+};
 
-const ClearButton: FC<Props> = props => (
+const ClearButton: FC<Props> = (props) => (
   <Box>
     <Box p={2}>
       <Button
@@ -27,6 +27,6 @@ const ClearButton: FC<Props> = props => (
       <Divider />
     </Box>
   </Box>
-)
+);
 
-export default ClearButton
+export default ClearButton;

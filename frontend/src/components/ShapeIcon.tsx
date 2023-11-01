@@ -1,14 +1,14 @@
-import { FC } from 'react'
+import { FC } from "react";
 
 type Props = {
-  shape: Shape
-  sizeMultiplier?: number
-}
+  shape: Shape;
+  sizeMultiplier?: number;
+};
 
 const ShapeIcon: FC<Props> = ({ shape, sizeMultiplier = 1 }) => {
   switch (shape) {
     default:
-    case 'triangle':
+    case "triangle":
       return (
         <svg
           width={37 * sizeMultiplier}
@@ -20,8 +20,8 @@ const ShapeIcon: FC<Props> = ({ shape, sizeMultiplier = 1 }) => {
             fill="#57b3da"
           />
         </svg>
-      )
-    case 'square':
+      );
+    case "square":
       return (
         <svg
           width={32 * sizeMultiplier}
@@ -30,8 +30,8 @@ const ShapeIcon: FC<Props> = ({ shape, sizeMultiplier = 1 }) => {
         >
           <rect width={32} height={32} rx={2} ry={2} fill="#ffbb10" />
         </svg>
-      )
-    case 'circle':
+      );
+    case "circle":
       return (
         <svg
           width={32 * sizeMultiplier}
@@ -40,8 +40,8 @@ const ShapeIcon: FC<Props> = ({ shape, sizeMultiplier = 1 }) => {
         >
           <circle cx={16} cy={16} r={16} fill="#7f66ad" />
         </svg>
-      )
+      );
   }
-}
+};
 
-export default ShapeIcon
+export default ShapeIcon;

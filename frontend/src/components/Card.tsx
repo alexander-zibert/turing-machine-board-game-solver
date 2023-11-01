@@ -1,66 +1,66 @@
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import { useTheme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { CriteriaCard } from 'hooks/useCriteriaCard'
-import { FC } from 'react'
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { CriteriaCard } from "hooks/useCriteriaCard";
+import { FC } from "react";
 
 type Props = {
-  card: Undefinable<CriteriaCard>
-  cardImage: string
-  onToggleCriteria: (criteria: number) => void
-}
+  card: Undefinable<CriteriaCard>;
+  cardImage: string;
+  onToggleCriteria: (criteria: number) => void;
+};
 
-const Card: FC<Props> = props => {
-  const theme = useTheme()
-  const isDownMd = useMediaQuery(theme.breakpoints.down('md'))
+const Card: FC<Props> = (props) => {
+  const theme = useTheme();
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const strippedBackground = `linear-gradient(45deg, #000000 16.67%, transparent 16.67%, transparent 50%, #000000 50%, #000000 66.67%, transparent 66.67%, transparent 100%);
   background-size: 8px 8px;
-  `
+  `;
 
   const getRadius = (slot: number, rows: 1 | 2 | 3) => {
     if (rows === 1) {
       if (slot === 1) {
-        return theme.spacing(1, 0, 0, 1)
+        return theme.spacing(1, 0, 0, 1);
       }
       if (slot === props.card?.criteriaSlots) {
-        return theme.spacing(0, 1, 1, 0)
+        return theme.spacing(0, 1, 1, 0);
       }
     }
 
     if (rows === 2) {
       if (slot === 1) {
-        return theme.spacing(1, 0, 0, 0)
+        return theme.spacing(1, 0, 0, 0);
       }
       if (slot === 2) {
-        return theme.spacing(0, 0, 0, 1)
+        return theme.spacing(0, 0, 0, 1);
       }
       if (props.card?.criteriaSlots && slot === props.card?.criteriaSlots - 1) {
-        return theme.spacing(0, 1, 0, 0)
+        return theme.spacing(0, 1, 0, 0);
       }
       if (slot === props.card?.criteriaSlots) {
-        return theme.spacing(0, 0, 1, 0)
+        return theme.spacing(0, 0, 1, 0);
       }
     }
 
     if (rows === 3) {
       if (slot === 1) {
-        return theme.spacing(1, 0, 0, 0)
+        return theme.spacing(1, 0, 0, 0);
       }
       if (slot === 3) {
-        return theme.spacing(0, 0, 0, 1)
+        return theme.spacing(0, 0, 0, 1);
       }
       if (props.card?.criteriaSlots && slot === props.card?.criteriaSlots - 2) {
-        return theme.spacing(0, 1, 0, 0)
+        return theme.spacing(0, 1, 0, 0);
       }
       if (slot === props.card?.criteriaSlots) {
-        return theme.spacing(0, 0, 1, 0)
+        return theme.spacing(0, 0, 1, 0);
       }
     }
 
-    return 0
-  }
+    return 0;
+  };
 
   const getStrippedStyles = (slot: number, rows: 1 | 2 | 3 = 1) => ({
     flexGrow: 1,
@@ -79,21 +79,21 @@ const Card: FC<Props> = props => {
         : isDownMd
         ? 64
         : 68,
-    width: '100%',
+    width: "100%",
     borderRadius: getRadius(slot, rows),
-    '&:hover': {
+    "&:hover": {
       background: props.card?.irrelevantCriteria.includes(slot)
         ? strippedBackground
         : undefined,
     },
-  })
+  });
 
   const renderRowButtons = (large: boolean) => {
     if (!props.card?.criteriaSlots || props.card.criteriaSlots < 6) {
-      return
+      return;
     }
 
-    const items = []
+    const items = [];
 
     for (let i = 0; i < props.card?.criteriaSlots; i += large ? 3 : 2) {
       items.push(
@@ -107,29 +107,29 @@ const Card: FC<Props> = props => {
           <Button
             sx={getStrippedStyles(i + 1, large ? 3 : 2)}
             onClick={() => {
-              props.onToggleCriteria(i + 1)
+              props.onToggleCriteria(i + 1);
             }}
           />
           <Button
             sx={getStrippedStyles(i + 2, large ? 3 : 2)}
             onClick={() => {
-              props.onToggleCriteria(i + 2)
+              props.onToggleCriteria(i + 2);
             }}
           />
           {large && (
             <Button
               sx={getStrippedStyles(i + 3, 3)}
               onClick={() => {
-                props.onToggleCriteria(i + 3)
+                props.onToggleCriteria(i + 3);
               }}
             />
           )}
         </Box>
-      )
+      );
     }
 
-    return items
-  }
+    return items;
+  };
 
   return (
     <Box position="relative">
@@ -137,8 +137,8 @@ const Card: FC<Props> = props => {
         src={props.cardImage}
         alt={props.cardImage}
         style={{
-          display: 'block',
-          width: '100%',
+          display: "block",
+          width: "100%",
         }}
       />
       <Box position="absolute" top={0} display="flex" width={1}></Box>
@@ -158,7 +158,7 @@ const Card: FC<Props> = props => {
                   key={index}
                   sx={getStrippedStyles(index + 1)}
                   onClick={() => {
-                    props.onToggleCriteria(index + 1)
+                    props.onToggleCriteria(index + 1);
                   }}
                 />
               ))
@@ -167,7 +167,7 @@ const Card: FC<Props> = props => {
             )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

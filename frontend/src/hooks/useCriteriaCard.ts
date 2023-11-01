@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useUpdateEffect } from 'react-use'
-import { commentsActions } from 'store/slices/commentsSlice'
-import { useAppDispatch } from './useAppDispatch'
-import { useAppSelector } from './useAppSelector'
+import { useEffect, useMemo, useState } from "react";
+import { useUpdateEffect } from "react-use";
+import { commentsActions } from "store/slices/commentsSlice";
+import { useAppDispatch } from "./useAppDispatch";
+import { useAppSelector } from "./useAppSelector";
 
 export type CriteriaCard = {
-  id: number
-  criteriaSlots: 1 | 2 | 3 | 4 | 6 | 9
-  irrelevantCriteria: number[]
-  nightmare?: boolean
-}
+  id: number;
+  criteriaSlots: 1 | 2 | 3 | 4 | 6 | 9;
+  irrelevantCriteria: number[];
+  nightmare?: boolean;
+};
 
 export const criteriaCardPool: CriteriaCard[] = [
   { id: 1, criteriaSlots: 2, irrelevantCriteria: [] },
@@ -60,44 +60,44 @@ export const criteriaCardPool: CriteriaCard[] = [
   { id: 46, criteriaSlots: 6, irrelevantCriteria: [] },
   { id: 47, criteriaSlots: 6, irrelevantCriteria: [] },
   { id: 48, criteriaSlots: 9, irrelevantCriteria: [] },
-]
+];
 
 const getCardUrl = (card?: CriteriaCard) =>
   card
     ? `https://turingmachine.info/images/criteriacards/EN/TM_GameCards_EN-${(
-        '0' + card.id
+        "0" + card.id
       ).slice(-2)}.png`
-    : ''
+    : "";
 
 export const useCriteriaCard = (verifier: Verifier, index: number) => {
-  const comments = useAppSelector(state => state.comments)
+  const comments = useAppSelector((state) => state.comments);
 
   const [card, setCard] = useState<Undefinable<CriteriaCard>>(
-    comments.find(comment => comment.verifier === verifier)?.criteriaCards[
+    comments.find((comment) => comment.verifier === verifier)?.criteriaCards[
       index
-    ]
-  )
+    ],
+  );
 
   useEffect(() => {
     setCard(
-      comments.find(comment => comment.verifier === verifier)?.criteriaCards[
+      comments.find((comment) => comment.verifier === verifier)?.criteriaCards[
         index
-      ]
-    )
-  }, [comments, index, verifier])
+      ],
+    );
+  }, [comments, index, verifier]);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const toggleCriteria = (criteria: number) => {
-    if (!card) return
+    if (!card) return;
 
-    const criteriaIndex = card.irrelevantCriteria.indexOf(criteria)
+    const criteriaIndex = card.irrelevantCriteria.indexOf(criteria);
 
     if (criteriaIndex === -1) {
       setCard({
         ...card,
         irrelevantCriteria: [...card.irrelevantCriteria, criteria],
-      })
+      });
     } else {
       setCard({
         ...card,
@@ -105,19 +105,19 @@ export const useCriteriaCard = (verifier: Verifier, index: number) => {
           ...card.irrelevantCriteria.slice(0, criteriaIndex),
           ...card.irrelevantCriteria.slice(criteriaIndex + 1),
         ],
-      })
+      });
     }
-  }
+  };
 
-  const cardImage = useMemo(() => getCardUrl(card), [card])
+  const cardImage = useMemo(() => getCardUrl(card), [card]);
 
   useUpdateEffect(() => {
-    dispatch(commentsActions.updateCard({ verifier, index, card }))
-  }, [card])
+    dispatch(commentsActions.updateCard({ verifier, index, card }));
+  }, [card]);
 
   return {
     card,
     cardImage,
     toggleCriteria,
-  }
-}
+  };
+};

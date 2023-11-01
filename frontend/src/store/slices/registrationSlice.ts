@@ -1,44 +1,44 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type RegistrationState = {
-  name: string
-  hash: string
-  status: 'new' | 'fetch' | 'ready'
-}
+  name: string;
+  hash: string;
+  status: "new" | "fetch" | "ready";
+};
 
 const initialState: RegistrationState = {
-  name: '',
-  hash: '',
-  status: 'new',
-}
+  name: "",
+  hash: "",
+  status: "new",
+};
 
 export const registrationSlice = createSlice({
-  name: 'registration',
+  name: "registration",
   initialState,
   reducers: {
     load: (_, action: PayloadAction<RegistrationState>) => action.payload,
     reset: () => initialState,
-    fetch: state => ({
+    fetch: (state) => ({
       ...state,
-      status: 'fetch',
+      status: "fetch",
     }),
-    fetchBad: state => ({
+    fetchBad: (state) => ({
       ...state,
-      status: 'new',
+      status: "new",
     }),
-    fetchDone: state => ({
+    fetchDone: (state) => ({
       ...state,
-      status: 'ready',
+      status: "ready",
     }),
     updateName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload
+      state.name = action.payload;
     },
     updateHash: (state, action: PayloadAction<string>) => {
-      state.hash = action.payload.replace('#', '')
+      state.hash = action.payload.replace("#", "");
     },
   },
-})
+});
 
-export const registrationActions = registrationSlice.actions
+export const registrationActions = registrationSlice.actions;
 
-export default registrationSlice.reducer
+export default registrationSlice.reducer;

@@ -35,7 +35,7 @@ function getPossibleCombinations(verifierCards: number[], queries: Query[]) {
   const codes = [];
   for (let i = 0; i < numCodes; i += 1) {
     codes.push(
-      String(output[offset]) + output[offset + 1] + output[offset + 2]
+      String(output[offset]) + output[offset + 1] + output[offset + 2],
     );
     offset += 3;
   }

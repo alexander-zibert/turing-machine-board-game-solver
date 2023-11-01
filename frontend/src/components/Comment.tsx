@@ -1,25 +1,25 @@
-import Box from '@mui/material/Box'
-import { useCriteriaCard } from 'hooks/useCriteriaCard'
-import { FC } from 'react'
-import Card from './Card'
-import SingleCharLabel from './SingleCharLabel'
+import Box from "@mui/material/Box";
+import { useCriteriaCard } from "hooks/useCriteriaCard";
+import { FC } from "react";
+import Card from "./Card";
+import SingleCharLabel from "./SingleCharLabel";
 
 type Props = {
-  verifier: Verifier
-  noDivider?: boolean
-}
+  verifier: Verifier;
+  noDivider?: boolean;
+};
 
 const Comment: FC<Props> = ({ verifier, noDivider }) => {
   const {
     card: firstCard,
     cardImage: firstCardImage,
     toggleCriteria: toggleFirstCardCriteria,
-  } = useCriteriaCard(verifier, 0)
+  } = useCriteriaCard(verifier, 0);
   const {
     card: secondCard,
     cardImage: secondCardImage,
     toggleCriteria: togglesecondCardCriteria,
-  } = useCriteriaCard(verifier, 1)
+  } = useCriteriaCard(verifier, 1);
 
   return (
     <Box mb={noDivider ? 0 : 2}>
@@ -31,7 +31,7 @@ const Comment: FC<Props> = ({ verifier, noDivider }) => {
                 position="absolute"
                 zIndex={1}
                 px={2}
-                sx={theme => ({
+                sx={(theme) => ({
                   background: theme.palette.primary.main,
                   color: theme.palette.common.white,
                   borderTopLeftRadius: theme.spacing(1),
@@ -54,7 +54,7 @@ const Comment: FC<Props> = ({ verifier, noDivider }) => {
               position="absolute"
               zIndex={1}
               px={2}
-              sx={theme => ({
+              sx={(theme) => ({
                 background: theme.palette.primary.main,
                 color: theme.palette.common.white,
                 borderTopLeftRadius: theme.spacing(1),
@@ -72,7 +72,7 @@ const Comment: FC<Props> = ({ verifier, noDivider }) => {
         )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Comment
+export default Comment;

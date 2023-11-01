@@ -45,7 +45,7 @@ const Root: FC = () => {
 
   const canBeSave = () => {
     const save = state.saves.find(
-      (save) => save.registration.hash === state.registration.hash
+      (save) => save.registration.hash === state.registration.hash,
     );
 
     if (!save) {
