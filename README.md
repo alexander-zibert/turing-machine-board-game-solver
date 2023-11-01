@@ -36,7 +36,7 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [x] Implement all cards and verifiers
 - [x] Use the [Turing Machine Interactive Sheet](https://github.com/zyle87/turing-machine-interactive-sheet) as frontend with this solver as WASM module
 - [x] Implement letter checkboxes in the frontend
-- [ ] Implement normal and extreme mode
+- [x] Implement classic and extreme mode
 - [x] Check letter combinations
 - [ ] Use web workers to not block the main thread
 - [ ] Deploy on github pages
