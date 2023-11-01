@@ -45,7 +45,7 @@ const Root: FC = () => {
 
   const canBeSave = () => {
     const save = state.saves.find(
-      (save) => save.registration.hash === state.registration.hash,
+      (save) => save.registration.hash === state.registration.hash
     );
 
     if (!save) {
@@ -77,7 +77,7 @@ const Root: FC = () => {
         mb={6}
       >
         <img
-          src={process.env.PUBLIC_URL + "assets/logo.png"}
+          src={process.env.PUBLIC_URL + "/assets/logo.png"}
           alt="logo"
           style={{ width: 320 }}
         />
