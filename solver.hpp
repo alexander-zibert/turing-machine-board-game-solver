@@ -81,8 +81,10 @@ struct result_t {
   std::vector<std::set<char>> possibleMatches;
 };
 
+enum struct game_mode_t : uint8_t { classic = 0, extreme = 1, nightmare = 2 };
+
 const auto solve = [](const std::vector<card_t> &game,
-                      const std::vector<query_t> &queries) {
+                      const std::vector<query_t> &queries, game_mode_t mode) {
   // Step 1: Calculate all possible verifier combinations of the game that lead
   // to a unique solution with no redundant verifiers
   auto possibleCombinations = std::vector<std::vector<verifier_t>>{};
@@ -103,7 +105,8 @@ const auto solve = [](const std::vector<card_t> &game,
   solverResult.possibleVerifiers.resize(game.size());
   for (size_t i = 0; i < possibleCombinations.size(); i += 1) {
     const auto &possibleCombination = possibleCombinations[i];
-    auto possibleMatchings = initialize_verifier_sets(game, true);
+    auto possibleMatchings =
+        initialize_verifier_sets(game, mode == game_mode_t::nightmare);
     // remove all matchings which give a different result
     for (const auto &query : queries) {
       for (size_t cardIdx = 0; cardIdx < possibleCombination.size();

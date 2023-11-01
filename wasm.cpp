@@ -6,12 +6,24 @@ extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
                                                 uint8_t *output) {
   // input parsing
   size_t offset = 0;
-  auto numCards = input[offset];
+  auto mode = game_mode_t{input[offset]};
   offset += 1;
-  auto cards = std::vector<card_t>{numCards};
-  for (uint8_t i = 0; i < numCards; i += 1) {
+  auto numVerifiers = input[offset];
+  offset += 1;
+  auto cards = std::vector<card_t>{numVerifiers};
+  for (uint8_t i = 0; i < numVerifiers; i += 1) {
     cards[i] = all_cards[input[offset]];
     offset += 1;
+  }
+  if (mode == game_mode_t::extreme) {
+    // copy all verifiers from the other card to the verifier slot
+    for (uint8_t i = 0; i < numVerifiers; i += 1) {
+      const auto otherCard = all_cards[input[offset]];
+      for (const auto verifier : otherCard) {
+        cards[i].push_back(verifier);
+      }
+      offset += 1;
+    }
   }
 
   auto numQueries = input[offset];
@@ -25,7 +37,7 @@ extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
     offset += 5;
   }
 
-  auto result = solve(cards, queries);
+  auto result = solve(cards, queries, mode);
   offset = 0;
   // transform result
 

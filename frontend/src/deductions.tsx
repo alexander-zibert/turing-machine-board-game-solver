@@ -6,11 +6,16 @@ export type Query = {
   result: boolean;
 };
 
-function getPossibleCombinations(verifierCards: number[], queries: Query[]) {
+function getPossibleCombinations(
+  verifierCards: number[],
+  queries: Query[],
+  mode: number,
+  numVerifiers: number
+) {
   const { memory, solve_wasm } = (window as any).Module.asm;
   const numCards = verifierCards.length;
   const numQueries = queries.length;
-  const inputValues = [verifierCards.length, ...verifierCards, numQueries];
+  const inputValues = [mode, numVerifiers, ...verifierCards, numQueries];
   for (const query of queries) {
     inputValues.push(query.code[0]);
     inputValues.push(query.code[1]);
@@ -41,20 +46,19 @@ function getPossibleCombinations(verifierCards: number[], queries: Query[]) {
   }
 
   const possibleVerifiers: number[][] = [];
-  for (let i = 0; i < numCards; i += 1) {
+  for (let i = 0; i < numVerifiers; i += 1) {
     const numVerifiers = output[offset];
     offset += 1;
     possibleVerifiers.push([]);
     for (let j = 0; j < numVerifiers; j += 1) {
       const verifier = output[offset];
       offset += 1;
-      // the verifiers are 1-indexed in the frontend
-      possibleVerifiers[i].push(verifier + 1);
+      possibleVerifiers[i].push(verifier);
     }
   }
 
   const possibleLetters: string[][] = [];
-  for (let i = 0; i < numCards; i += 1) {
+  for (let i = 0; i < numVerifiers; i += 1) {
     const numLetters = output[offset];
     offset += 1;
     possibleLetters.push([]);
@@ -90,9 +94,21 @@ function checkDigits(state: RootState, possibleCodes: string[]) {
 
 function checkVerifiers(state: RootState, possibleVerifiers: number[][]) {
   for (let i = 0; i < state.comments.length; i += 1) {
-    const card = state.comments[i].criteriaCards[0];
-    for (const criteria of card.irrelevantCriteria) {
-      if (possibleVerifiers[i].includes(criteria)) {
+    const firstCard = state.comments[i].criteriaCards[0];
+    for (const criteria of firstCard.irrelevantCriteria) {
+      // the verifiers are 1-indexed in the frontend
+      if (possibleVerifiers[i].includes(criteria - 1)) {
+        return false;
+      }
+    }
+    // extreme mode
+    const secondCard = state.comments[i].criteriaCards[1] || {
+      irrelevantCriteria: [],
+    };
+    for (const criteria of secondCard.irrelevantCriteria) {
+      if (
+        possibleVerifiers[i].includes(criteria - 1 + firstCard.criteriaSlots)
+      ) {
         return false;
       }
     }
@@ -116,9 +132,27 @@ function checkLetters(state: RootState, possibleLetters: string[][]) {
 }
 
 export function checkDeductions(state: RootState) {
-  const cards = state.comments.map(({ criteriaCards }) => {
-    return criteriaCards[0].id;
-  });
+  const numVerifiers = state.comments.length;
+  const mode = (() => {
+    if (state.comments[0].nightmare) {
+      return 2;
+    }
+    if (state.comments[0].criteriaCards.length > 1) {
+      return 1;
+    }
+    return 0;
+  })();
+  const cards = [
+    ...state.comments.map(({ criteriaCards }) => {
+      return criteriaCards[0].id;
+    }),
+    ...(mode === 1
+      ? state.comments.map(({ criteriaCards }) => {
+          return criteriaCards[1].id;
+        })
+      : []),
+  ];
+
   const queries: Query[] = [];
   for (const round of state.rounds) {
     const code: number[] = [];
@@ -142,7 +176,7 @@ export function checkDeductions(state: RootState) {
       });
     }
   }
-  const result = getPossibleCombinations(cards, queries);
+  const result = getPossibleCombinations(cards, queries, mode, numVerifiers);
   console.log(result);
   console.log(state);
   if (
