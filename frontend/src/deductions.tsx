@@ -6,75 +6,7 @@ export type Query = {
   result: boolean;
 };
 
-function getPossibleCombinations(
-  verifierCards: number[],
-  queries: Query[],
-  mode: number,
-  numVerifiers: number
-) {
-  const { memory, solve_wasm } = (window as any).Module.asm;
-  const numCards = verifierCards.length;
-  const numQueries = queries.length;
-  const inputValues = [mode, numVerifiers, ...verifierCards, numQueries];
-  for (const query of queries) {
-    inputValues.push(query.code[0]);
-    inputValues.push(query.code[1]);
-    inputValues.push(query.code[2]);
-    inputValues.push(query.verifierIdx);
-    inputValues.push(query.result ? 1 : 0);
-  }
-  let offset = 0;
-  const input = new Uint8Array(memory.buffer, offset, inputValues.length);
-  input.set(inputValues);
-  offset += input.byteLength;
-
-  const output = new Uint8Array(memory.buffer, offset, 1000);
-  offset += output.byteLength;
-
-  const start = new Date();
-  solve_wasm(input.byteOffset, output.byteOffset);
-  console.log("Solving took", new Date().valueOf() - start.valueOf(), "ms");
-  offset = 0;
-  const numCodes = output[offset];
-  offset += 1;
-  const codes = [];
-  for (let i = 0; i < numCodes; i += 1) {
-    codes.push(
-      String(output[offset]) + output[offset + 1] + output[offset + 2]
-    );
-    offset += 3;
-  }
-
-  const possibleVerifiers: number[][] = [];
-  for (let i = 0; i < numVerifiers; i += 1) {
-    const numVerifiers = output[offset];
-    offset += 1;
-    possibleVerifiers.push([]);
-    for (let j = 0; j < numVerifiers; j += 1) {
-      const verifier = output[offset];
-      offset += 1;
-      possibleVerifiers[i].push(verifier);
-    }
-  }
-
-  const possibleLetters: string[][] = [];
-  for (let i = 0; i < numVerifiers; i += 1) {
-    const numLetters = output[offset];
-    offset += 1;
-    possibleLetters.push([]);
-    for (let j = 0; j < numLetters; j += 1) {
-      const letter = output[offset];
-      offset += 1;
-      possibleLetters[i].push(String.fromCharCode(letter));
-    }
-  }
-
-  return {
-    codes,
-    possibleVerifiers,
-    possibleLetters,
-  };
-}
+const myWorker = new Worker("/wasm/worker.mjs");
 
 function checkDigits(state: RootState, possibleCodes: string[]) {
   const digits = { triangle: new Set(), square: new Set(), circle: new Set() };
@@ -176,7 +108,18 @@ export function checkDeductions(state: RootState) {
       });
     }
   }
-  const result = getPossibleCombinations(cards, queries, mode, numVerifiers);
+  myWorker.postMessage({
+    state,
+    verifierCards: cards,
+    queries,
+    mode,
+    numVerifiers,
+  });
+}
+
+myWorker.onmessage = function onmessage(e) {
+  const result = e.data;
+  const state = result.state;
   console.log(result);
   console.log(state);
   if (
@@ -190,4 +133,4 @@ export function checkDeductions(state: RootState) {
   } else {
     alert("All deductions are valid!");
   }
-}
+};
