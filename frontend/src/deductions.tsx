@@ -6,7 +6,9 @@ export type Query = {
   result: boolean;
 };
 
-const myWorker = new Worker("/wasm/worker.mjs");
+const myWorker = new Worker(
+  "/turing-machine-board-game-solver/wasm/worker.mjs"
+);
 
 function checkDigits(state: RootState, possibleCodes: string[]) {
   const digits = { triangle: new Set(), square: new Set(), circle: new Set() };

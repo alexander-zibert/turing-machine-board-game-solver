@@ -30,7 +30,7 @@ globalThis.onerror = (event) => {
   };
 };
 
-importScripts("/wasm/wasmWrapper.js");
+importScripts("/turing-machine-board-game-solver/wasm/wasmWrapper.js");
 
 function getPossibleCombinations({
   state,
