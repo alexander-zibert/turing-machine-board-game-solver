@@ -11,9 +11,28 @@ const shuffle = (array: number[]) => {
   return array;
 };
 
+export type Letter = {
+  letter: Verifier;
+  isIrrelevant: boolean;
+};
+
 type Comment = {
   verifier: Verifier;
+  nightmare: boolean;
   criteriaCards: CriteriaCard[];
+  letters: Letter[];
+};
+
+const createLetters = (
+  numVerifiers: number,
+  verifier: Verifier,
+  nightmare: boolean
+): Letter[] => {
+  const letters = verifiers.slice(0, numVerifiers);
+  return letters.map((letter: Verifier) => ({
+    letter,
+    isIrrelevant: nightmare ? false : verifier !== letter,
+  }));
 };
 
 export type CommentsState = Comment[];
@@ -32,9 +51,10 @@ export const commentsSlice = createSlice({
         fake?: number[];
         ind: number[];
         m?: number;
-      }>,
+      }>
     ) => {
       const { fake, ind, m } = action.payload;
+      const nightmare = m === 2;
 
       for (let i = 0; i < ind.length; i++) {
         if (fake) {
@@ -43,24 +63,39 @@ export const commentsSlice = createSlice({
 
           state.push({
             verifier: verifiers[i],
+            nightmare,
             criteriaCards: [
               criteriaCardPool.find((cc) => cc.id === shuffledCards[0])!,
               criteriaCardPool.find((cc) => cc.id === shuffledCards[1])!,
             ],
+            letters: createLetters(ind.length, verifiers[i], nightmare),
           });
         } else {
           const card = ind.sort((n1, n2) => n1 - n2)[i];
 
           state.push({
             verifier: verifiers[i],
+            nightmare,
             criteriaCards: [
               {
                 ...criteriaCardPool.find((cc) => cc.id === card)!,
-                nightmare: m === 2,
+                nightmare,
               },
             ],
+            letters: createLetters(ind.length, verifiers[i], nightmare),
           });
         }
+      }
+    },
+    updateLetters: (
+      state,
+      action: PayloadAction<{ verifier: Verifier; letters?: Letter[] }>
+    ) => {
+      const { verifier, letters } = action.payload;
+      if (!letters) return;
+      const comment = state.find((comment) => comment.verifier === verifier);
+      if (comment) {
+        comment.letters = letters;
       }
     },
     updateCard: (
@@ -69,7 +104,7 @@ export const commentsSlice = createSlice({
         verifier: Verifier;
         index: number;
         card?: CriteriaCard;
-      }>,
+      }>
     ) => {
       const { verifier, index, card } = action.payload;
 
@@ -79,10 +114,14 @@ export const commentsSlice = createSlice({
       if (comment) {
         comment.criteriaCards[index] = card;
       } else {
-        state.push({
-          criteriaCards: [card],
-          verifier,
-        });
+        throw new Error("There should always be a comment for each verifier!?");
+        // TODO: when does this happen? hardcoding nightmare and letters is probably wrong
+        // state.push({
+        //   nightmare: false,
+        //   criteriaCards: [card],
+        //   verifier,
+        //   letters: [{ letter: verifier, isIrrelevant: false }],
+        // });
       }
     },
   },

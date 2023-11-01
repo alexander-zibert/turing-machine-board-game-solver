@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useUpdateEffect } from "react-use";
-import { commentsActions } from "store/slices/commentsSlice";
+import { Letter, commentsActions } from "store/slices/commentsSlice";
 import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 
@@ -71,20 +71,23 @@ const getCardUrl = (card?: CriteriaCard) =>
 
 export const useCriteriaCard = (verifier: Verifier, index: number) => {
   const comments = useAppSelector((state) => state.comments);
+  const getComment = (verifier: Verifier) =>
+    comments.find((comment) => comment.verifier === verifier);
 
   const [card, setCard] = useState<Undefinable<CriteriaCard>>(
-    comments.find((comment) => comment.verifier === verifier)?.criteriaCards[
-      index
-    ],
+    getComment(verifier)?.criteriaCards[index]
+  );
+  const [letters, setLetters] = useState<Undefinable<Letter[]>>(
+    getComment(verifier)?.letters
   );
 
   useEffect(() => {
-    setCard(
-      comments.find((comment) => comment.verifier === verifier)?.criteriaCards[
-        index
-      ],
-    );
+    setCard(getComment(verifier)?.criteriaCards[index]);
   }, [comments, index, verifier]);
+
+  useEffect(() => {
+    setLetters(getComment(verifier)?.letters);
+  }, [comments, verifier]);
 
   const dispatch = useAppDispatch();
 
@@ -115,9 +118,29 @@ export const useCriteriaCard = (verifier: Verifier, index: number) => {
     dispatch(commentsActions.updateCard({ verifier, index, card }));
   }, [card]);
 
+  const toggleLetter = (verifier: Verifier) => {
+    if (!letters) return;
+    setLetters(
+      letters.map((letter: Letter) => {
+        if (letter.letter === verifier) {
+          return {
+            ...letter,
+            isIrrelevant: !letter.isIrrelevant,
+          };
+        }
+        return letter;
+      })
+    );
+  };
+  useEffect(() => {
+    dispatch(commentsActions.updateLetters({ verifier, letters }));
+  }, [letters]);
+
   return {
     card,
     cardImage,
     toggleCriteria,
+    letters,
+    toggleLetter,
   };
 };

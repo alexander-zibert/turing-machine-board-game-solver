@@ -3,6 +3,9 @@ import { useCriteriaCard } from "hooks/useCriteriaCard";
 import { FC } from "react";
 import Card from "./Card";
 import SingleCharLabel from "./SingleCharLabel";
+import Incorrect from "@mui/icons-material/HorizontalRuleRounded";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
 
 type Props = {
   verifier: Verifier;
@@ -14,12 +17,16 @@ const Comment: FC<Props> = ({ verifier, noDivider }) => {
     card: firstCard,
     cardImage: firstCardImage,
     toggleCriteria: toggleFirstCardCriteria,
+    letters,
+    toggleLetter,
   } = useCriteriaCard(verifier, 0);
   const {
     card: secondCard,
     cardImage: secondCardImage,
     toggleCriteria: togglesecondCardCriteria,
   } = useCriteriaCard(verifier, 1);
+
+  const theme = useTheme();
 
   return (
     <Box mb={noDivider ? 0 : 2}>
@@ -71,6 +78,36 @@ const Comment: FC<Props> = ({ verifier, noDivider }) => {
           </Box>
         )}
       </Box>
+      {firstCard &&
+        firstCard.nightmare &&
+        letters?.map((letter) => (
+          <Box key={letter.letter} position="relative" display={"inline-block"}>
+            <IconButton
+              id={`digit-code__${verifier}-${letter.letter}-button`}
+              color="primary"
+              sx={{
+                height: theme.spacing(6),
+                width: theme.spacing(6),
+              }}
+              onClick={() => toggleLetter(letter.letter)}
+            >
+              <SingleCharLabel>{letter.letter}</SingleCharLabel>
+              <Box
+                position="absolute"
+                top={4}
+                left={4}
+                sx={{ color: theme.palette.text.primary }}
+              >
+                {letter.isIrrelevant && (
+                  <Incorrect
+                    fontSize="large"
+                    sx={{ transform: "rotate(-45deg)" }}
+                  />
+                )}
+              </Box>
+            </IconButton>
+          </Box>
+        ))}
     </Box>
   );
 };
