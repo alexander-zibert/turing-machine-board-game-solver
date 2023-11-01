@@ -35,7 +35,7 @@ function getPossibleCombinations(verifierCards: number[], queries: Query[]) {
   const codes = [];
   for (let i = 0; i < numCodes; i += 1) {
     codes.push(
-      String(output[offset]) + output[offset + 1] + output[offset + 2],
+      String(output[offset]) + output[offset + 1] + output[offset + 2]
     );
     offset += 3;
   }
@@ -100,6 +100,21 @@ function checkVerifiers(state: RootState, possibleVerifiers: number[][]) {
   return true;
 }
 
+function checkLetters(state: RootState, possibleLetters: string[][]) {
+  if (!state.comments[0].nightmare) {
+    return true;
+  }
+  for (let i = 0; i < state.comments.length; i += 1) {
+    const letters = state.comments[i].letters;
+    for (const letter of letters) {
+      if (letter.isIrrelevant && possibleLetters[i].includes(letter.letter)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export function checkDeductions(state: RootState) {
   const cards = state.comments.map(({ criteriaCards }) => {
     return criteriaCards[0].id;
@@ -133,7 +148,8 @@ export function checkDeductions(state: RootState) {
   if (
     !(
       checkVerifiers(state, result.possibleVerifiers) &&
-      checkDigits(state, result.codes)
+      checkDigits(state, result.codes) &&
+      checkLetters(state, result.possibleLetters)
     )
   ) {
     alert("You have made an invalid deduction!");
