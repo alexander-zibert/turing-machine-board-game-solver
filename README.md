@@ -39,7 +39,7 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [x] Implement classic and extreme mode
 - [x] Check letter combinations
 - [x] Use web workers to not block the main thread
-- [ ] Deploy on github pages
+- [x] Deploy on github pages
 - [ ] Implement comment list of all possible codes in the frontend
 - [ ] Check comment list of all possible codes
 - [ ] Verify queries (warn if no code is possible)
