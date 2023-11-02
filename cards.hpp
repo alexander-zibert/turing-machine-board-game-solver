@@ -198,9 +198,8 @@ const auto even_greater_odd =
     verifier_t{"even_greater_odd",
                [](const code_t &code) { return count_even(code) >= 2; }};
 const auto odd_greater_even =
-    verifier_t{"odd_greater_even", [](const code_t &code) {
-                 return [](const code_t &code) { return count_even(code) < 2; };
-               }};
+    verifier_t{"odd_greater_even",
+               [](const code_t &code) { return count_even(code) < 2; }};
 const auto c16 = card_t{even_greater_odd, odd_greater_even};
 
 // card 17
@@ -247,11 +246,12 @@ const auto triple_digit =
     verifier_t{"triple_digit", [](const code_t &code) {
                  return code[0] == code[1] && code[1] == code[2];
                }};
-const auto double_digit = verifier_t{"double_digit", [](const code_t &code) {
-                                       return (code[0] == code[1]) ^
-                                              (code[0] == code[2]) ^
-                                              (code[1] == code[2]);
-                                     }};
+const auto double_digit =
+    verifier_t{"double_digit", [](const code_t &code) {
+                 return ((code[0] == code[1]) || (code[0] == code[2]) ||
+                         (code[1] == code[2])) &&
+                        !triple_digit.isValid(code);
+               }};
 const auto no_repetition = verifier_t{"no_repetition", [](const code_t &code) {
                                         return (code[0] != code[1]) &&
                                                (code[0] != code[2]) &&
@@ -437,7 +437,7 @@ const auto yellow_plus_purple_equal_to_four =
     verifier_t{"yellow_plus_purple_equal_to_four",
                [](const code_t &code) { return code[1] + code[2] == 4; }};
 const auto c37 =
-    card_t{blue_plus_yellow_equal_to_four, blue_plus_yellow_equal_to_four,
+    card_t{blue_plus_yellow_equal_to_four, blue_plus_purple_equal_to_four,
            yellow_plus_purple_equal_to_four};
 
 // card 38
