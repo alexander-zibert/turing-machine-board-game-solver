@@ -491,7 +491,7 @@ const auto c44 = card_t{blue_greater_than_yellow, yellow_less_than_purple,
 
 // card 45
 const auto c45 =
-    card_t{zero_ones, one_one, two_ones, zero_threes, one_three, two_threes};
+    card_t{zero_ones, zero_threes, one_one, one_three, two_ones, two_threes};
 
 // card 46
 const auto c46 =
