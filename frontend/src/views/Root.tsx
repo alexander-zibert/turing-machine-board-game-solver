@@ -5,6 +5,7 @@ import DarkModeIcon from "@mui/icons-material/DarkModeRounded";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LightModeIcon from "@mui/icons-material/LightModeRounded";
 import SaveIcon from "@mui/icons-material/SaveRounded";
+import CheckIcon from "@mui/icons-material/RuleFolderRounded";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -99,13 +100,40 @@ const Root: FC = () => {
             Interactive Sheet
           </h3>
           <Box display="flex" justifyContent="center" position="relative">
-            <button
+            <IconButton
+              aria-label="check"
+              disabled={state.registration.status !== "ready"}
+              sx={{ position: "relative", color: theme.palette.primary.dark }}
               onClick={() => {
                 checkDeductions(state);
               }}
             >
-              Check
-            </button>
+              <ContentIcon />
+              <Box
+                sx={{
+                  background: theme.palette.background.default,
+                  width: theme.spacing(2),
+                  height: theme.spacing(2),
+                  bottom: 8,
+                  position: "absolute",
+                  right: 8,
+                }}
+              >
+                <CheckIcon
+                  fontSize="small"
+                  sx={{
+                    position: "absolute",
+                    right: -4,
+                    bottom: -3,
+                    fontSize: 18,
+                  }}
+                />
+              </Box>
+            </IconButton>
+            <Divider
+              orientation="vertical"
+              sx={{ height: "auto", margin: theme.spacing(0, 1) }}
+            />
             <IconButton
               aria-label="new"
               disabled={state.registration.status !== "ready"}
