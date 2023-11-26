@@ -1,5 +1,6 @@
-import SolvedIcon from "@mui/icons-material/CheckRounded";
-import UnsolvedIcon from "@mui/icons-material/CloseRounded";
+import SolvedIcon from "@mui/icons-material/CheckBoxRounded";
+import UnsolvedIcon from "@mui/icons-material/DisabledByDefaultRounded";
+import BlankBoxIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
 import DeleteIcon from "@mui/icons-material/UndoRounded";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -93,7 +94,6 @@ const Round: FC<Props> = ({ round, index }) => {
                   <Box
                     sx={{
                       textAlign: "center",
-
                       borderRadius:
                         query.verifier === "F"
                           ? theme.spacing(0, 0, 2, 0)
@@ -101,29 +101,16 @@ const Round: FC<Props> = ({ round, index }) => {
                     }}
                   >
                     <SingleCharLabel>{query.verifier}</SingleCharLabel>
-                    <Box pt={1} pb={2} position="relative">
-                      <Box
-                        height={20}
-                        margin="auto"
-                        width={20}
-                        sx={{
-                          borderWidth: 2,
-                          borderStyle: "solid",
-                          borderColor: theme.palette.primary.main,
-                          borderRadius: theme.spacing(0.5),
-                        }}
-                      />
-                      <Box
-                        position="absolute"
-                        top={-2}
-                        left={3}
-                        sx={{ color: theme.palette.text.primary }}
-                      >
+                    <Box position="relative">
+                      <Box>
+                        {query.state === "unknown" && (
+                          <BlankBoxIcon sx={{ color: theme.palette.primary.main }} />
+                        )}
                         {query.state === "solved" && (
-                          <SolvedIcon fontSize="large" />
+                          <SolvedIcon sx={{ color: theme.palette.primary.dark }} />
                         )}
                         {query.state === "unsolved" && (
-                          <UnsolvedIcon fontSize="large" />
+                          <UnsolvedIcon sx={{ color: theme.palette.secondary.dark }} />
                         )}
                       </Box>
                     </Box>
