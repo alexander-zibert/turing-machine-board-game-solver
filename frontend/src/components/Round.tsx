@@ -91,7 +91,6 @@ const Round: FC<Props> = ({ round, index }) => {
               >
                 <Box width={1}>
                   <Box
-                    pt={1}
                     sx={{
                       textAlign: "center",
 
