@@ -15,9 +15,10 @@ describe("store", () => {
   });
 
   it("should toggle palette mode", () => {
-    const appDispatch = renderHook(useAppDispatch, { wrapper });
+    // noinspection TypeScriptValidateTypes
+    const { result } = renderHook(() => useAppDispatch(), { wrapper });
 
-    appDispatch.result.current(settingsActions.togglePaletteMode());
+    result.current(settingsActions.togglePaletteMode());
 
     expect(store.getState()).toMatchSnapshot();
   });
