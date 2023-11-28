@@ -80,20 +80,24 @@ const LanguageDropdown: FC<Props> = (props) => {
                 }}
             >
                 <option value={""} disabled hidden></option>
-                <option value={"FR"}>Français</option>
-                <option value={"EN"}>English</option>
+                <option value={"BR"}>Português</option>
                 <option value={"CNS"}>简体中文</option>
                 <option value={"CNT"}>繁體中文</option>
-                <option value={"KR"}>한국어</option>
+                <option value={"CZ"}>Česky</option>
                 <option value={"DE"}>Deutsch</option>
+                <option value={"EN"}>English</option>
+                <option value={"FR"}>Français</option>
+                <option value={"GR"}>Ελληνικά</option>
                 <option value={"HU"}>Magyar</option>
                 <option value={"IT"}>Italiano</option>
-                <option value={"ES"}>Español</option>
-                <option value={"GR"}>Ελληνικά</option>
-                <option value={"BR"}>Português</option>
                 <option value={"JP"}>日本語</option>
-                <option value={"PL"}>Polski</option>
+                <option value={"KR"}>한국어</option>
                 <option value={"NL"}>Dutch</option>
+                <option value={"PL"}>Polski</option>
+                <option value={"RU"}>Русский</option>
+                <option value={"SP"}>Español</option>
+                <option value={"TH"}>ไทย</option>
+                <option value={"UA"}>Українська</option>
             </select>
             {props.iconRender && (
                 <Box
