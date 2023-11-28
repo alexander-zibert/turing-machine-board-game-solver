@@ -51,9 +51,10 @@ export const commentsSlice = createSlice({
         fake?: number[];
         ind: number[];
         m?: number;
+        language: string;
       }>
     ) => {
-      const { fake, ind, m } = action.payload;
+      const { fake, ind, m, language } = action.payload;
       const nightmare = m === 2;
 
       for (let i = 0; i < ind.length; i++) {
@@ -65,8 +66,14 @@ export const commentsSlice = createSlice({
             verifier: verifiers[i],
             nightmare,
             criteriaCards: [
-              criteriaCardPool.find((cc) => cc.id === shuffledCards[0])!,
-              criteriaCardPool.find((cc) => cc.id === shuffledCards[1])!,
+              {
+                ...criteriaCardPool.find((cc) => cc.id === shuffledCards[0])!,
+                language,
+              },
+              {
+                ...criteriaCardPool.find((cc) => cc.id === shuffledCards[1])!,
+                language,
+              },
             ],
             letters: createLetters(ind.length, verifiers[i], nightmare),
           });
@@ -80,6 +87,7 @@ export const commentsSlice = createSlice({
               {
                 ...criteriaCardPool.find((cc) => cc.id === card)!,
                 nightmare,
+                language,
               },
             ],
             letters: createLetters(ind.length, verifiers[i], nightmare),
