@@ -20,11 +20,12 @@ import { digitCodeActions } from "store/slices/digitCodeSlice";
 import { registrationActions } from "store/slices/registrationSlice";
 import { roundsActions } from "store/slices/roundsSlice";
 import Dropdown from "../components/LanguageDropdown";
+import { useLanguageState } from "../hooks/useLanguageState";
 
 const Registration: FC = () => {
   const dispatch = useAppDispatch();
   const registration = useAppSelector((state) => state.registration);
-  const [language, setLanguage] = useState(localStorage.getItem("lang") || "EN");
+  const [language, setLanguage] = useLanguageState("EN", "lang");
   const [showNotFound, setShowNotFound] = useState(false);
   const theme = useTheme();
 
@@ -135,11 +136,7 @@ const Registration: FC = () => {
               withStackRadius
               value={language}
               maxChars={2}
-              onChange={(value) => {
-                  localStorage.setItem("lang", value);
-                  setLanguage(value);
-                }
-              }
+              onChange={(value) => setLanguage(value)}
               withReset={registration.status === "new"}
               onReset={() => setLanguage("EN")}
               customRadius={
