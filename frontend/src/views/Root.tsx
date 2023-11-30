@@ -29,6 +29,8 @@ import Registration from "./Registration";
 import Rounds from "./Rounds";
 import Saves from "./Saves";
 import { checkDeductions } from "deductions";
+import LanguageSelect from "../components/LanguageSelect";
+import { settingsActions } from "../store/slices/settingsSlice";
 
 const Root: FC = () => {
   const { theme, togglePaletteMode } = usePaletteMode();
@@ -36,6 +38,7 @@ const Root: FC = () => {
   const isUpLg = useMediaQuery(theme.breakpoints.up("lg"));
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state);
+  const language = useAppSelector((state) => state.settings.language);
 
   const [savesDialog, setSavesDialog] = useState(false);
   const [hasBadge, setHasBadge] = useState(false);
@@ -140,7 +143,10 @@ const Root: FC = () => {
               color="primary"
               sx={{ position: "relative" }}
               onClick={() => {
-                dispatch(registrationActions.reset());
+                // eslint-disable-next-line no-restricted-globals
+                if (!canBeSave() || confirm("Your game is not saved!\nDo you really want to create a new game.")) {
+                    dispatch(registrationActions.reset());
+                }
               }}
             >
               <ContentIcon />
@@ -214,6 +220,16 @@ const Root: FC = () => {
             <Divider
               orientation="vertical"
               sx={{ height: "auto", margin: theme.spacing(0, 1) }}
+            />
+            <LanguageSelect
+              value={language}
+              disabled={false}
+              prefixId="settings__lang"
+              onChange={(value) => dispatch(settingsActions.updateLanguage(value))}
+            />
+            <Divider
+              orientation="vertical"
+              sx={{ height: "auto", margin: theme.spacing(0, 1, 0, 0) }}
             />
             <IconButton
               aria-label="toggle palette mode"
