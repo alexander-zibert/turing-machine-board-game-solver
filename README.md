@@ -43,7 +43,7 @@ Run `make doctest` in the root directory. Then you can run the binary `./test.ou
 - [x] Deploy on github pages
 - [ ] Implement comment list of all possible codes in the frontend
 - [ ] Check comment list of all possible codes
-- [ ] Verify queries (warn if no code is possible)
+- [x] Verify queries (warn if no code is possible)
 - [x] Add tests based on [known puzzles + solutions](https://boardgamegeek.com/filepage/251409/book-8500-problems-offline-or-analog-use)
 - [ ] Implement puzzle generation
 - [ ] Use service workers for an offline experience
