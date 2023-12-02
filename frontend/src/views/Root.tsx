@@ -14,6 +14,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import Alert from "@mui/material/Alert";
+import CloseIcon from "@mui/icons-material/Close";
 import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppDispatch } from "hooks/useAppDispatch";
@@ -30,7 +32,8 @@ import Rounds from "./Rounds";
 import Saves from "./Saves";
 import { checkDeductions } from "deductions";
 import LanguageSelect from "../components/LanguageSelect";
-import { settingsActions } from "../store/slices/settingsSlice";
+import { settingsActions } from "store/slices/settingsSlice";
+import { alertActions } from "store/slices/alertSlice";
 
 const Root: FC = () => {
   const { theme, togglePaletteMode } = usePaletteMode();
@@ -47,7 +50,7 @@ const Root: FC = () => {
     state.saves.length === 0 && setSavesDialog(false);
   }, [state.saves]);
 
-  const canBeSave = () => {
+  const canBeSaved = () => {
     const save = state.saves.find(
       (save) => save.registration.hash === state.registration.hash
     );
@@ -143,9 +146,14 @@ const Root: FC = () => {
               color="primary"
               sx={{ position: "relative" }}
               onClick={() => {
-                // eslint-disable-next-line no-restricted-globals
-                if (!canBeSave() || confirm("Your game is not saved!\nDo you really want to create a new game.")) {
-                    dispatch(registrationActions.reset());
+                if (
+                  !canBeSaved() ||
+                  // eslint-disable-next-line no-restricted-globals
+                  confirm(
+                    "Your game is not saved!\nDo you really want to create a new game."
+                  )
+                ) {
+                  dispatch(registrationActions.reset());
                 }
               }}
             >
@@ -174,7 +182,7 @@ const Root: FC = () => {
             <IconButton
               aria-label="save"
               color="primary"
-              disabled={state.registration.status !== "ready" || !canBeSave()}
+              disabled={state.registration.status !== "ready" || !canBeSaved()}
               onClick={() => {
                 state.registration.hash && setHasBadge(true);
 
@@ -225,7 +233,9 @@ const Root: FC = () => {
               value={language}
               disabled={false}
               prefixId="settings__lang"
-              onChange={(value) => dispatch(settingsActions.updateLanguage(value))}
+              onChange={(value) =>
+                dispatch(settingsActions.updateLanguage(value))
+              }
             />
             <Divider
               orientation="vertical"
@@ -249,6 +259,24 @@ const Root: FC = () => {
               <GitHubIcon />
             </IconButton>
           </Box>
+          <Collapse in={state.alert.open}>
+            <Alert
+              severity={state.alert.level}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => dispatch(alertActions.closeAlert())}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              {state.alert.message}
+            </Alert>
+          </Collapse>
         </Box>
       </Box>
       <Registration />
