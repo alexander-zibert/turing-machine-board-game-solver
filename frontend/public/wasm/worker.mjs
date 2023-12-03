@@ -104,7 +104,32 @@ function getPossibleCombinations({
   };
 }
 
+function handleData(data) {
+  if (data.type === "solve_wasm") {
+    return getPossibleCombinations(data);
+  }
+  return callWasmFunction(Module.asm[data.type], Module.asm.memory, data);
+}
+
 this.onmessage = function onmessage(e) {
-  const result = getPossibleCombinations(e.data);
+  const { data } = e;
+  const result = handleData(data);
+  result.id = data.id;
+  console.log(result);
   this.postMessage(result);
 };
+
+function callWasmFunction(asmFunction, memory, inputData) {
+  const data = JSON.stringify(inputData);
+  const encoder = new TextEncoder();
+  const input = new Uint8Array(memory.buffer, 0);
+  const { written } = encoder.encodeInto(data, input);
+  input[written] = 0;
+
+  const output = new Uint8Array(memory.buffer, written + 1, 1000);
+  const outputSize = asmFunction(input.byteOffset, output.byteOffset);
+
+  const decoder = new TextDecoder();
+  const decoded = decoder.decode(output.slice(0, outputSize));
+  return JSON.parse(decoded);
+}

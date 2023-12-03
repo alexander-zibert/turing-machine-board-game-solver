@@ -113,7 +113,7 @@ export async function checkDeductions(state: RootState) {
   }
 
   const result = await waitForWorker({
-    state,
+    type: "solve_wasm",
     verifierCards: cards,
     queries,
     mode,
@@ -152,6 +152,33 @@ export async function checkDeductions(state: RootState) {
       })
     );
   }
+}
+
+export async function getPossibleCodes(state: RootState) {
+  const cards = state.comments.map(({ criteriaCards }) => {
+    return criteriaCards.map((card) => card.id);
+  });
+  const possibleVerifiers: number[][] = [];
+  for (const comment of state.comments) {
+    const current: number[] = [];
+    let criteriaIdx = 0;
+    for (const criteriaCard of comment.criteriaCards) {
+      for (let i = 0; i < criteriaCard.criteriaSlots; i += 1) {
+        if (!criteriaCard.irrelevantCriteria.includes(i + 1)) {
+          current.push(criteriaIdx);
+        }
+        criteriaIdx += 1;
+      }
+    }
+    possibleVerifiers.push(current);
+  }
+  console.log(cards, possibleVerifiers);
+
+  return waitForWorker({
+    type: "get_possible_codes",
+    cards,
+    possibleVerifiers,
+  });
 }
 
 let workId = 0;

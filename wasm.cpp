@@ -1,6 +1,21 @@
+#include "cards.hpp"
+#include "code.hpp"
+#include "json.hpp"
 #include "solver.hpp"
 #include <cstdint>
 #include <emscripten/emscripten.h>
+
+using json = nlohmann::json;
+
+int wasm_json(char *input, char *output, const std::function<json(json)> &foo) {
+  json data = json::parse(input);
+
+  const auto outputJson = foo(data);
+
+  const auto result = outputJson.dump();
+  strcpy(output, result.c_str());
+  return result.size();
+}
 
 extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
                                                 uint8_t *output) {
@@ -68,4 +83,21 @@ extern "C" EMSCRIPTEN_KEEPALIVE void solve_wasm(uint8_t *input,
       offset += 1;
     }
   }
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE int get_possible_codes(char *input,
+                                                       char *output) {
+  return wasm_json(input, output, [](const json &data) {
+    std::vector<std::vector<uint8_t>> slots = data["cards"];
+    std::vector<std::vector<uint8_t>> possibleVerifiers =
+        data["possibleVerifiers"];
+
+    const auto codes =
+        possible_codes_from_possible_verifiers(slots, possibleVerifiers);
+
+    auto outputJson = json();
+    outputJson["codes"] = codes;
+
+    return outputJson;
+  });
 }
