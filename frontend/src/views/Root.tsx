@@ -1,4 +1,3 @@
-import EraseIcon from "@mui/icons-material/AutoFixHighRounded";
 import ContentIcon from "@mui/icons-material/ContentPasteRounded";
 import SearchIcon from "@mui/icons-material/ContentPasteSearchRounded";
 import DarkModeIcon from "@mui/icons-material/DarkModeRounded";
@@ -23,7 +22,6 @@ import { useAppSelector } from "hooks/useAppSelector";
 import { usePaletteMode } from "hooks/usePaletteMode";
 import { FC, useState } from "react";
 import { useUpdateEffect } from "react-use";
-import { registrationActions } from "store/slices/registrationSlice";
 import { savesActions } from "store/slices/savesSlice";
 import Comments from "./Comments";
 import DigitCode from "./DigitCode";
@@ -31,9 +29,11 @@ import Registration from "./Registration";
 import Rounds from "./Rounds";
 import Saves from "./Saves";
 import { checkDeductions } from "deductions";
-import LanguageSelect from "../components/LanguageSelect";
+import LanguageSelect from "components/LanguageSelect";
+import { NewButton } from "components/NewButton";
 import { settingsActions } from "store/slices/settingsSlice";
 import { alertActions } from "store/slices/alertSlice";
+import { useCanBeSaved } from "hooks/useCanBeSaved";
 
 const Root: FC = () => {
   const { theme, togglePaletteMode } = usePaletteMode();
@@ -50,28 +50,7 @@ const Root: FC = () => {
     state.saves.length === 0 && setSavesDialog(false);
   }, [state.saves]);
 
-  const canBeSaved = () => {
-    const save = state.saves.find(
-      (save) => save.registration.hash === state.registration.hash
-    );
-
-    if (!save) {
-      return true;
-    }
-
-    const from = {
-      rounds: state.rounds,
-      comments: state.comments,
-      digitCode: state.digitCode,
-    };
-    const to = {
-      rounds: save?.rounds,
-      comments: save?.comments,
-      digitCode: save?.digitCode,
-    };
-
-    return JSON.stringify(from) !== JSON.stringify(to);
-  };
+  const canBeSaved = useCanBeSaved();
 
   return (
     <ThemeProvider theme={theme}>
@@ -140,49 +119,11 @@ const Root: FC = () => {
               orientation="vertical"
               sx={{ height: "auto", margin: theme.spacing(0, 1) }}
             />
-            <IconButton
-              aria-label="new"
-              disabled={state.registration.status !== "ready"}
-              color="primary"
-              sx={{ position: "relative" }}
-              onClick={() => {
-                if (
-                  !canBeSaved() ||
-                  // eslint-disable-next-line no-restricted-globals
-                  confirm(
-                    "Your game is not saved!\nDo you really want to create a new game."
-                  )
-                ) {
-                  dispatch(registrationActions.reset());
-                }
-              }}
-            >
-              <ContentIcon />
-              <Box
-                sx={{
-                  background: theme.palette.background.default,
-                  width: theme.spacing(2),
-                  height: theme.spacing(2),
-                  bottom: 8,
-                  position: "absolute",
-                  right: 8,
-                }}
-              >
-                <EraseIcon
-                  fontSize="small"
-                  sx={{
-                    position: "absolute",
-                    right: -4,
-                    bottom: -3,
-                    fontSize: 18,
-                  }}
-                />
-              </Box>
-            </IconButton>
+            <NewButton />
             <IconButton
               aria-label="save"
               color="primary"
-              disabled={state.registration.status !== "ready" || !canBeSaved()}
+              disabled={state.registration.status !== "ready" || !canBeSaved}
               onClick={() => {
                 state.registration.hash && setHasBadge(true);
 
