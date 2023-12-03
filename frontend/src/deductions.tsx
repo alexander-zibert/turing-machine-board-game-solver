@@ -66,7 +66,7 @@ function checkLetters(state: RootState, possibleLetters: string[][]) {
   return true;
 }
 
-export function checkDeductions(state: RootState) {
+export async function checkDeductions(state: RootState) {
   const numVerifiers = state.comments.length;
   const mode = (() => {
     if (state.comments[0].nightmare) {
@@ -111,24 +111,21 @@ export function checkDeductions(state: RootState) {
       });
     }
   }
-  myWorker.postMessage({
+
+  const result = await waitForWorker({
     state,
     verifierCards: cards,
     queries,
     mode,
     numVerifiers,
   });
-}
 
-myWorker.onmessage = function onmessage(e) {
-  const result = e.data;
-  const state = result.state;
   console.log(result);
   console.log(state);
   if (result.codes.length === 0) {
     store.dispatch(
       alertActions.openAlert({
-        message: `There are no more possible codes. 
+        message: `There are no more possible codes.
           Please double-check that you have the correct verifiers and that your query results are correct.
           If this problem still occurs, please file a bug report.`,
         level: "error",
@@ -155,4 +152,21 @@ myWorker.onmessage = function onmessage(e) {
       })
     );
   }
+}
+
+let workId = 0;
+const promiseResolves: { [id: number]: any } = {};
+async function waitForWorker(data: { [key: string]: any }): Promise<any> {
+  const currentWorkId = workId++;
+  return new Promise((res) => {
+    promiseResolves[currentWorkId] = res;
+    myWorker.postMessage({ ...data, id: currentWorkId });
+  });
+}
+
+myWorker.onmessage = function onmessage(e) {
+  const data = e.data;
+  const resolve = promiseResolves[data.id];
+  resolve(data);
+  delete promiseResolves[data.id];
 };

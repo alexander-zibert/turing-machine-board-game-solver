@@ -33,7 +33,7 @@ globalThis.onerror = (event) => {
 importScripts("/turing-machine-board-game-solver/wasm/wasmWrapper.js");
 
 function getPossibleCombinations({
-  state,
+  id,
   verifierCards,
   queries,
   mode,
@@ -97,7 +97,7 @@ function getPossibleCombinations({
   }
 
   return {
-    state,
+    id,
     codes,
     possibleVerifiers,
     possibleLetters,
