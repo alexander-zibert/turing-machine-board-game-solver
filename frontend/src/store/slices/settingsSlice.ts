@@ -20,8 +20,8 @@ export const settingsSlice = createSlice({
       state.paletteMode = state.paletteMode === "light" ? "dark" : "light";
     },
     updateLanguage: (state, action) => {
-      state.language = action.payload
-    }
+      state.language = action.payload;
+    },
   },
 });
 

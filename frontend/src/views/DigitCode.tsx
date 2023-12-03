@@ -51,7 +51,7 @@ const DigitCode: FC = () => {
                         digitCodeActions.toggleDigitState({
                           shape,
                           digit,
-                        }),
+                        })
                       );
                     }}
                   >
@@ -64,11 +64,11 @@ const DigitCode: FC = () => {
                     >
                       {digitCode.find(
                         (entry) =>
-                          entry.shape === shape && entry.digit === digit,
+                          entry.shape === shape && entry.digit === digit
                       )?.state === "correct" && <Correct fontSize="large" />}
                       {digitCode.find(
                         (entry) =>
-                          entry.shape === shape && entry.digit === digit,
+                          entry.shape === shape && entry.digit === digit
                       )?.state === "incorrect" && (
                         <Incorrect
                           fontSize="large"

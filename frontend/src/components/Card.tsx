@@ -73,12 +73,12 @@ const Card: FC<Props> = (props) => {
           ? 21
           : 23
         : rows === 2
-        ? isDownMd
-          ? 30
-          : 32
-        : isDownMd
-        ? 64
-        : 68,
+          ? isDownMd
+            ? 30
+            : 32
+          : isDownMd
+            ? 64
+            : 68,
     width: "100%",
     borderRadius: getRadius(slot, rows),
     "&:hover": {

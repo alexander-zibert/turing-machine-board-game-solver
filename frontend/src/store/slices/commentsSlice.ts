@@ -59,9 +59,9 @@ export const commentsSlice = createSlice({
       const addAdditionalCardAttributes = (card: number) => {
         return {
           ...criteriaCardPool.find((cc) => cc.id === card)!,
-          nightmare
-        }
-      }
+          nightmare,
+        };
+      };
 
       for (let i = 0; i < ind.length; i++) {
         if (fake) {
@@ -83,9 +83,7 @@ export const commentsSlice = createSlice({
           state.push({
             verifier: verifiers[i],
             nightmare,
-            criteriaCards: [
-              addAdditionalCardAttributes(card),
-            ],
+            criteriaCards: [addAdditionalCardAttributes(card)],
             letters: createLetters(ind.length, verifiers[i], nightmare),
           });
         }

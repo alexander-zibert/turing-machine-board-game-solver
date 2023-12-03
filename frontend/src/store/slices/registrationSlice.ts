@@ -38,7 +38,7 @@ export const registrationSlice = createSlice({
         .replace("#", "")
         .replaceAll(" ", "")
         .split(/(.{3})/)
-        .filter(e => e)
+        .filter((e) => e)
         .join(" ");
     },
   },

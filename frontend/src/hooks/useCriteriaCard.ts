@@ -63,8 +63,10 @@ export const criteriaCardPool: CriteriaCard[] = [
 ];
 
 const getCardUrl = (card?: CriteriaCard, language?: string) =>
-  (card && language)
-    ? `https://turingmachine.info/images/criteriacards/${language}/TM_GameCards_${language}-${( "0" + card.id ).slice(-2)}.png`
+  card && language
+    ? `https://turingmachine.info/images/criteriacards/${language}/TM_GameCards_${language}-${(
+        "0" + card.id
+      ).slice(-2)}.png`
     : "";
 
 export const useCriteriaCard = (verifier: Verifier, index: number) => {
