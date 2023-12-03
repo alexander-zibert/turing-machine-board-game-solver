@@ -16,6 +16,7 @@ import { registrationActions } from "store/slices/registrationSlice";
 import { useAppSelector } from "hooks/useAppSelector";
 import { useEffect, useState } from "react";
 import { getPossibleCodes } from "deductions";
+import Collapse from "@mui/material/Collapse";
 
 function groupByFirst(codes: string[]) {
   const result: { [key: number]: { code: string; possible: boolean }[] } = {
@@ -42,24 +43,39 @@ export function PossibleCodes() {
   const state = useAppSelector((state) => state);
 
   const [possibleCodes, setPossibleCodes] = useState(groupByFirst([]));
+  const [expanded, setExpanded] = useState(false);
+
+  function toggleExpanded() {
+    setExpanded(!expanded);
+  }
 
   useEffect(() => {
     getPossibleCodes(state).then((data) =>
       setPossibleCodes(groupByFirst(data.codes))
     );
-  }, [state]);
+  }, [state.comments]);
 
   return (
-    <Grid container spacing={8}>
-      {[1, 2, 3, 4, 5].map((number) => (
-        <Grid item xs={2}>
-          {possibleCodes[number].map(({ code, possible }) => (
-            <div key={code} style={{ color: possible ? "black" : "lightgrey" }}>
-              {code}
-            </div>
+    <>
+      <Button onClick={toggleExpanded}>
+        {expanded ? "Hide code list" : "Show code list"}
+      </Button>
+      <Collapse in={expanded}>
+        <Grid container spacing={8}>
+          {[1, 2, 3, 4, 5].map((number) => (
+            <Grid item xs={2}>
+              {possibleCodes[number].map(({ code, possible }) => (
+                <div
+                  key={code}
+                  style={{ color: possible ? "black" : "lightgrey" }}
+                >
+                  {code}
+                </div>
+              ))}
+            </Grid>
           ))}
         </Grid>
-      ))}
-    </Grid>
+      </Collapse>
+    </>
   );
 }
