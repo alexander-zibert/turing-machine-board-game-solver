@@ -1,4 +1,5 @@
-import { RootState } from "store";
+import { RootState, store } from "store";
+import { alertActions } from "store/slices/alertSlice";
 
 export type Query = {
   code: number[];
@@ -124,15 +125,34 @@ myWorker.onmessage = function onmessage(e) {
   const state = result.state;
   console.log(result);
   console.log(state);
-  if (
+  if (result.codes.length === 0) {
+    store.dispatch(
+      alertActions.openAlert({
+        message: `There are no more possible codes. 
+          Please double-check that you have the correct verifiers and that your query results are correct.
+          If this problem still occurs, please file a bug report.`,
+        level: "error",
+      })
+    );
+  } else if (
     !(
       checkVerifiers(state, result.possibleVerifiers) &&
       checkDigits(state, result.codes) &&
       checkLetters(state, result.possibleLetters)
     )
   ) {
-    alert("You have made an invalid deduction!");
+    store.dispatch(
+      alertActions.openAlert({
+        message: `You have made an invalid deduction!`,
+        level: "warning",
+      })
+    );
   } else {
-    alert("All deductions are valid!");
+    store.dispatch(
+      alertActions.openAlert({
+        message: `All deductions are valid so far!`,
+        level: "success",
+      })
+    );
   }
 };
