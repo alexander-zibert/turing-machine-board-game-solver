@@ -1,5 +1,6 @@
 import { RootState, store } from "store";
 import { alertActions } from "store/slices/alertSlice";
+import { CommentsState } from "store/slices/commentsSlice";
 
 export type Query = {
   code: number[];
@@ -154,12 +155,12 @@ export async function checkDeductions(state: RootState) {
   }
 }
 
-export async function getPossibleCodes(state: RootState) {
-  const cards = state.comments.map(({ criteriaCards }) => {
+export async function getPossibleCodes(comments: CommentsState) {
+  const cards = comments.map(({ criteriaCards }) => {
     return criteriaCards.map((card) => card.id);
   });
   const possibleVerifiers: number[][] = [];
-  for (const comment of state.comments) {
+  for (const comment of comments) {
     const current: number[] = [];
     let criteriaIdx = 0;
     for (const criteriaCard of comment.criteriaCards) {

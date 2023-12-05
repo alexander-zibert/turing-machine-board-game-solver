@@ -1,18 +1,6 @@
-import IconButton from "@mui/material/IconButton";
-import ContentIcon from "@mui/icons-material/ContentPasteRounded";
-import Box from "@mui/material/Box";
-import EraseIcon from "@mui/icons-material/AutoFixHighRounded";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { usePaletteMode } from "hooks/usePaletteMode";
-import { useCanBeSaved } from "hooks/useCanBeSaved";
-import { useAppDispatch } from "hooks/useAppDispatch";
-import { registrationActions } from "store/slices/registrationSlice";
 import { useAppSelector } from "hooks/useAppSelector";
 import { useEffect, useState } from "react";
 import { getPossibleCodes } from "deductions";
@@ -39,8 +27,6 @@ function groupByFirst(codes: string[]) {
 
 export function PossibleCodes() {
   const { theme } = usePaletteMode();
-  const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state);
 
   const [possibleCodes, setPossibleCodes] = useState(groupByFirst([]));
   const [expanded, setExpanded] = useState(false);
@@ -49,11 +35,12 @@ export function PossibleCodes() {
     setExpanded(!expanded);
   }
 
+  const comments = useAppSelector((state) => state.comments);
   useEffect(() => {
-    getPossibleCodes(state).then((data) =>
+    getPossibleCodes(comments).then((data) =>
       setPossibleCodes(groupByFirst(data.codes))
     );
-  }, [state.comments]);
+  }, [comments]);
 
   return (
     <>
@@ -67,7 +54,11 @@ export function PossibleCodes() {
               {possibleCodes[number].map(({ code, possible }) => (
                 <div
                   key={code}
-                  style={{ color: possible ? "black" : "lightgrey" }}
+                  style={{
+                    color: possible
+                      ? theme.palette.text.primary
+                      : theme.palette.text.disabled,
+                  }}
                 >
                   {code}
                 </div>
