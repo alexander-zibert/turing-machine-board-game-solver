@@ -50,7 +50,7 @@ const Registration: FC = () => {
             dispatch(registrationActions.fetchDone());
             dispatch(commentsActions.setCards({ ind, fake, m }));
             break;
-          case "bad":
+          default:
             setShowNotFound(true);
             dispatch(registrationActions.fetchBad());
             break;
