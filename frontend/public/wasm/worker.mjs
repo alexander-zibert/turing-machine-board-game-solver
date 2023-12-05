@@ -111,7 +111,18 @@ function handleData(data) {
   return callWasmFunction(Module.asm[data.type], Module.asm.memory, data);
 }
 
-this.onmessage = function onmessage(e) {
+async function delay(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+async function waitForWasmModule() {
+  while (!Module?.asm) {
+    await delay(100);
+  }
+}
+
+this.onmessage = async function onmessage(e) {
+  await waitForWasmModule();
   const { data } = e;
   const result = handleData(data);
   result.id = data.id;
