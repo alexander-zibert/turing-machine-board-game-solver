@@ -68,7 +68,7 @@ const Registration: FC = () => {
         </FormControl>
       )}
       {registrationMethod === "turing-hash" && <HashCodeRegistration />}
-      {registrationMethod === "manual" && (
+      {registrationMethod === "manual" && registration.status === "new" && (
         <Card>
           <Box m={2}>
             <ManualRegistration />
