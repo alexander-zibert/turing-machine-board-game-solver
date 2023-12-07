@@ -2,6 +2,11 @@
 
 exports[`store should match initial state 1`] = `
 Object {
+  "alert": Object {
+    "level": "info",
+    "message": "",
+    "open": false,
+  },
   "comments": Array [],
   "digitCode": Array [],
   "registration": Object {
@@ -56,6 +61,7 @@ Object {
   ],
   "saves": Array [],
   "settings": Object {
+    "language": "EN",
     "paletteMode": "light",
     "storeVersion": 1695655881142,
   },
@@ -64,6 +70,11 @@ Object {
 
 exports[`store should toggle palette mode 1`] = `
 Object {
+  "alert": Object {
+    "level": "info",
+    "message": "",
+    "open": false,
+  },
   "comments": Array [],
   "digitCode": Array [],
   "registration": Object {
@@ -118,6 +129,7 @@ Object {
   ],
   "saves": Array [],
   "settings": Object {
+    "language": "EN",
     "paletteMode": "dark",
     "storeVersion": 1695655881142,
   },

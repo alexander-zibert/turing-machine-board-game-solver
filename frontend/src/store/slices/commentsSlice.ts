@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CriteriaCard, criteriaCardPool, CryptCard } from "hooks/useCriteriaCard";
+import {
+  CriteriaCard,
+  criteriaCardPool,
+  CryptCard,
+} from "hooks/useCriteriaCard";
 
 const verifiers: Verifier[] = ["A", "B", "C", "D", "E", "F"];
 
@@ -36,6 +40,13 @@ const createLetters = (
 };
 
 export type CommentsState = Comment[];
+export type GameSetup = {
+  ind: number[];
+  crypt: number[];
+  color: number;
+  fake?: number[];
+  m: number;
+};
 
 const initialState: CommentsState = [];
 
@@ -45,24 +56,18 @@ export const commentsSlice = createSlice({
   reducers: {
     load: (_, action: PayloadAction<CommentsState>) => action.payload,
     reset: () => initialState,
-    setCards: (
-      state,
-      action: PayloadAction<{
-        ind: number[];
-        crypt: number[];
-        color: number;
-        fake?: number[];
-        m?: number;
-      }>
-    ) => {
+    setCards: (state, action: PayloadAction<GameSetup>) => {
       const { ind, crypt, color, fake, m } = action.payload;
       const nightmare = m === 2;
 
-      const addAdditionalCardAttributes = (card: number, cryptNumber: number) => {
+      const addAdditionalCardAttributes = (
+        card: number,
+        cryptNumber: number
+      ) => {
         return {
           ...criteriaCardPool.find((cc) => cc.id === card)!,
           nightmare,
-          cryptCard: {id: cryptNumber, color: color} as CryptCard,
+          cryptCard: { id: cryptNumber, color: color } as CryptCard,
         };
       };
 
