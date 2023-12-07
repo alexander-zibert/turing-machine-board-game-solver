@@ -79,7 +79,6 @@ const ManualRegistration: FC = () => {
   const [mode, setMode] = useState(0);
   const [cardText, setCardText] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
-  const theme = useTheme();
 
   function validateCardText(cardText: string) {
     const cards = parseCards(cardText);

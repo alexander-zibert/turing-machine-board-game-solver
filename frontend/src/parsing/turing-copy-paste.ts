@@ -20,7 +20,7 @@ function parseClassicMatch(match: string[]) {
   const ind = [];
   const crypt = [];
   for (let i = 0; i < match.length; i += 1) {
-    if (i % 2 == 0) {
+    if (i % 2 === 0) {
       ind.push(Number(match[i]));
     } else {
       crypt.push(Number(match[i]));
