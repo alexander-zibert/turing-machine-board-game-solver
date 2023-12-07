@@ -34,6 +34,7 @@ import { NewButton } from "components/NewButton";
 import { settingsActions } from "store/slices/settingsSlice";
 import { alertActions } from "store/slices/alertSlice";
 import { useCanBeSaved } from "hooks/useCanBeSaved";
+import { PossibleCodes } from "components/PossibleCodes";
 
 const Root: FC = () => {
   const { theme, togglePaletteMode } = usePaletteMode();
@@ -232,6 +233,7 @@ const Root: FC = () => {
             </Grid>
             <Grid item lg={3} xs={12}>
               {isUpLg ? <DigitCode /> : <Comments />}
+              <PossibleCodes />
             </Grid>
           </Grid>
         </Collapse>

@@ -49,7 +49,7 @@ export const roundsSlice = createSlice({
           (verifier) => ({
             verifier,
             state: "unknown",
-          }),
+          })
         ),
         isPristine: true,
       });
@@ -60,7 +60,7 @@ export const roundsSlice = createSlice({
         index: number;
         shape: Shape;
         digit: Nullable<Digit>;
-      }>,
+      }>
     ) => {
       const { index, shape, digit } = action.payload;
       const round = state[index];
@@ -74,7 +74,7 @@ export const roundsSlice = createSlice({
     },
     updateQueryState: (
       state,
-      action: PayloadAction<{ index: number; verifier: Verifier }>,
+      action: PayloadAction<{ index: number; verifier: Verifier }>
     ) => {
       const { index, verifier } = action.payload;
       const round = state[index];

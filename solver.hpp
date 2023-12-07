@@ -173,3 +173,31 @@ const auto solve = [](const std::vector<card_t> &game,
   }
   return solverResult;
 };
+
+const auto possible_codes_from_possible_verifiers =
+    [](const std::vector<std::vector<uint8_t>> &slots,
+       const std::vector<std::vector<uint8_t>> &possibleVerifiers) {
+      auto cards = std::vector<card_t>{slots.size()};
+      for (auto i = 0; i < slots.size(); i += 1) {
+        const auto slot = slots[i];
+        for (const auto card : slot) {
+          for (const auto &verifier : all_cards[card]) {
+            cards[i].push_back(verifier);
+          }
+        }
+      }
+
+      auto res = all_ones_mask;
+      for (auto i = 0; i < cards.size(); i += 1) {
+        const auto &card = cards[i];
+
+        auto temp = all_zeros_mask;
+        for (const auto &possibleVerifier : possibleVerifiers[i]) {
+          temp |= card[possibleVerifier].code_mask;
+        }
+
+        res &= temp;
+      }
+      const auto codes = get_codes_from_mask(res);
+      return codes;
+    };

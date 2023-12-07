@@ -33,6 +33,7 @@ using verifier_factory = std::function<bool(const code_t &)>;
 using code_mask_t = std::bitset<NUM_CODES>;
 
 const code_mask_t all_ones_mask = []() { return code_mask_t{}.set(); }();
+const code_mask_t all_zeros_mask = code_mask_t{};
 
 constexpr auto iterate_codes = [](const auto &consumer) {
   auto i = 0;
@@ -53,6 +54,7 @@ const auto create_verifier = [](const verifier_factory &is_valid) {
   });
   return result;
 };
+
 const std::vector<std::string> human_codes = []() {
   auto result = std::vector<std::string>{};
   iterate_codes([&result](int codeIdx, const code_t &code) {
@@ -61,6 +63,7 @@ const std::vector<std::string> human_codes = []() {
   });
   return result;
 }();
+
 const std::vector<code_t> code_map = []() {
   auto result = std::vector<code_t>{};
   iterate_codes([&result](int codeIdx, const code_t &code) {
@@ -68,3 +71,14 @@ const std::vector<code_t> code_map = []() {
   });
   return result;
 }();
+
+const auto get_codes_from_mask = [](const code_mask_t &mask) {
+  auto result = std::vector<std::string>{};
+  iterate_codes([&result, &mask](int codeIdx, const code_t &code) {
+    if (mask[codeIdx]) {
+      result.emplace_back(std::to_string(code[0]) + std::to_string(code[1]) +
+                          std::to_string(code[2]));
+    }
+  });
+  return result;
+};

@@ -44,7 +44,7 @@ const Round: FC<Props> = ({ round, index }) => {
                     index,
                     shape: code.shape,
                     digit: value ? (Number(value) as Digit) : null,
-                  }),
+                  })
                 );
               }}
               iconRender={
@@ -78,7 +78,7 @@ const Round: FC<Props> = ({ round, index }) => {
                     0,
                     0,
                     query.verifier === "F" ? 2 : 0,
-                    query.verifier === "A" ? 2 : 0,
+                    query.verifier === "A" ? 2 : 0
                   ),
                 }}
                 onClick={() => {
@@ -86,7 +86,7 @@ const Round: FC<Props> = ({ round, index }) => {
                     roundsActions.updateQueryState({
                       index,
                       verifier: query.verifier,
-                    }),
+                    })
                   );
                 }}
               >
@@ -104,13 +104,19 @@ const Round: FC<Props> = ({ round, index }) => {
                     <Box position="relative">
                       <Box>
                         {query.state === "unknown" && (
-                          <BlankBoxIcon sx={{ color: theme.palette.primary.main }} />
+                          <BlankBoxIcon
+                            sx={{ color: theme.palette.primary.main }}
+                          />
                         )}
                         {query.state === "solved" && (
-                          <SolvedIcon sx={{ color: theme.palette.primary.dark }} />
+                          <SolvedIcon
+                            sx={{ color: theme.palette.primary.dark }}
+                          />
                         )}
                         {query.state === "unsolved" && (
-                          <UnsolvedIcon sx={{ color: theme.palette.secondary.dark }} />
+                          <UnsolvedIcon
+                            sx={{ color: theme.palette.secondary.dark }}
+                          />
                         )}
                       </Box>
                     </Box>

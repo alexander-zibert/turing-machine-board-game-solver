@@ -27,7 +27,7 @@ export const savesSlice = createSlice({
       if (registration.hash === "") return state;
 
       const saveIndex = state.findIndex(
-        (save) => save.registration.hash === registration.hash,
+        (save) => save.registration.hash === registration.hash
       );
 
       if (state[saveIndex]) {

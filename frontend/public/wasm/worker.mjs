@@ -33,7 +33,7 @@ globalThis.onerror = (event) => {
 importScripts("/turing-machine-board-game-solver/wasm/wasmWrapper.js");
 
 function getPossibleCombinations({
-  state,
+  id,
   verifierCards,
   queries,
   mode,
@@ -97,14 +97,50 @@ function getPossibleCombinations({
   }
 
   return {
-    state,
+    id,
     codes,
     possibleVerifiers,
     possibleLetters,
   };
 }
 
-this.onmessage = function onmessage(e) {
-  const result = getPossibleCombinations(e.data);
+function handleData(data) {
+  if (data.type === "solve_wasm") {
+    return getPossibleCombinations(data);
+  }
+  return callWasmFunction(Module.asm[data.type], Module.asm.memory, data);
+}
+
+async function delay(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+async function waitForWasmModule() {
+  while (!Module?.asm) {
+    await delay(100);
+  }
+}
+
+this.onmessage = async function onmessage(e) {
+  await waitForWasmModule();
+  const { data } = e;
+  const result = handleData(data);
+  result.id = data.id;
+  console.log(result);
   this.postMessage(result);
 };
+
+function callWasmFunction(asmFunction, memory, inputData) {
+  const data = JSON.stringify(inputData);
+  const encoder = new TextEncoder();
+  const input = new Uint8Array(memory.buffer, 0);
+  const { written } = encoder.encodeInto(data, input);
+  input[written] = 0;
+
+  const output = new Uint8Array(memory.buffer, written + 1, 1000);
+  const outputSize = asmFunction(input.byteOffset, output.byteOffset);
+
+  const decoder = new TextDecoder();
+  const decoded = decoder.decode(output.slice(0, outputSize));
+  return JSON.parse(decoded);
+}

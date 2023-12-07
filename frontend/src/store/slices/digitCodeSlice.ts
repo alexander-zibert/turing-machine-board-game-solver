@@ -16,12 +16,12 @@ export const digitCodeSlice = createSlice({
     reset: () => initialState,
     toggleDigitState: (
       state,
-      action: PayloadAction<{ shape: Shape; digit: Digit }>,
+      action: PayloadAction<{ shape: Shape; digit: Digit }>
     ) => {
       const { shape, digit } = action.payload;
 
       const index = state.findIndex(
-        (entry) => entry.shape === shape && entry.digit === digit,
+        (entry) => entry.shape === shape && entry.digit === digit
       );
 
       if (index >= 0) {

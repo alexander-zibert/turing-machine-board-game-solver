@@ -1,5 +1,6 @@
 import { RootState, store } from "store";
 import { alertActions } from "store/slices/alertSlice";
+import { CommentsState } from "store/slices/commentsSlice";
 
 export type Query = {
   code: number[];
@@ -66,7 +67,7 @@ function checkLetters(state: RootState, possibleLetters: string[][]) {
   return true;
 }
 
-export function checkDeductions(state: RootState) {
+export async function checkDeductions(state: RootState) {
   const numVerifiers = state.comments.length;
   const mode = (() => {
     if (state.comments[0].nightmare) {
@@ -111,24 +112,21 @@ export function checkDeductions(state: RootState) {
       });
     }
   }
-  myWorker.postMessage({
-    state,
+
+  const result = await waitForWorker({
+    type: "solve_wasm",
     verifierCards: cards,
     queries,
     mode,
     numVerifiers,
   });
-}
 
-myWorker.onmessage = function onmessage(e) {
-  const result = e.data;
-  const state = result.state;
   console.log(result);
   console.log(state);
   if (result.codes.length === 0) {
     store.dispatch(
       alertActions.openAlert({
-        message: `There are no more possible codes. 
+        message: `There are no more possible codes.
           Please double-check that you have the correct verifiers and that your query results are correct.
           If this problem still occurs, please file a bug report.`,
         level: "error",
@@ -155,4 +153,48 @@ myWorker.onmessage = function onmessage(e) {
       })
     );
   }
+}
+
+export async function getPossibleCodes(comments: CommentsState) {
+  const cards = comments.map(({ criteriaCards }) => {
+    return criteriaCards.map((card) => card.id);
+  });
+  const possibleVerifiers: number[][] = [];
+  for (const comment of comments) {
+    const current: number[] = [];
+    let criteriaIdx = 0;
+    for (const criteriaCard of comment.criteriaCards) {
+      for (let i = 0; i < criteriaCard.criteriaSlots; i += 1) {
+        if (!criteriaCard.irrelevantCriteria.includes(i + 1)) {
+          current.push(criteriaIdx);
+        }
+        criteriaIdx += 1;
+      }
+    }
+    possibleVerifiers.push(current);
+  }
+  console.log(cards, possibleVerifiers);
+
+  return waitForWorker({
+    type: "get_possible_codes",
+    cards,
+    possibleVerifiers,
+  });
+}
+
+let workId = 0;
+const promiseResolves: { [id: number]: any } = {};
+async function waitForWorker(data: { [key: string]: any }): Promise<any> {
+  const currentWorkId = workId++;
+  return new Promise((res) => {
+    promiseResolves[currentWorkId] = res;
+    myWorker.postMessage({ ...data, id: currentWorkId });
+  });
+}
+
+myWorker.onmessage = function onmessage(e) {
+  const data = e.data;
+  const resolve = promiseResolves[data.id];
+  resolve(data);
+  delete promiseResolves[data.id];
 };
