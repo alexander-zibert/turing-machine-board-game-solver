@@ -89,12 +89,14 @@ const HashCodeRegistration: FC = () => {
           {registration.hash} Game ID not found!
         </Alert>
       </Snackbar>
-      <Box pt={0.5} pb={0.5}>
-        <Alert severity="warning">
-          Starting a game by hashcode might be broken at the moment. If you
-          encounter an error, please use the manual method.
-        </Alert>
-      </Box>
+      {registration.status === "new" && (
+        <Box pt={0.5} pb={0.5}>
+          <Alert severity="warning">
+            Starting a game by hashcode might be broken at the moment. If you
+            encounter an error, please use the manual method.
+          </Alert>
+        </Box>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
