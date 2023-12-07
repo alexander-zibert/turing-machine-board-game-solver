@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { CriteriaCard, criteriaCardPool } from "hooks/useCriteriaCard";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CriteriaCard, criteriaCardPool, CryptCard } from "hooks/useCriteriaCard";
 
 const verifiers: Verifier[] = ["A", "B", "C", "D", "E", "F"];
 
@@ -48,20 +48,23 @@ export const commentsSlice = createSlice({
     setCards: (
       state,
       action: PayloadAction<{
-        fake?: number[];
         ind: number[];
+        crypt: number[];
+        color: number;
+        fake?: number[];
         m?: number;
       }>
     ) => {
-      const { fake, ind, m } = action.payload;
+      const { ind, crypt, color, fake, m } = action.payload;
       const nightmare = m === 2;
 
-      const addAdditionalCardAttributes = (card: number) => {
+      const addAdditionalCardAttributes = (card: number, cryptNumber: number) => {
         return {
           ...criteriaCardPool.find((cc) => cc.id === card)!,
-          nightmare
-        }
-      }
+          nightmare,
+          cryptCard: {id: cryptNumber, color: color} as CryptCard,
+        };
+      };
 
       for (let i = 0; i < ind.length; i++) {
         if (fake) {
@@ -72,20 +75,16 @@ export const commentsSlice = createSlice({
             verifier: verifiers[i],
             nightmare,
             criteriaCards: [
-              addAdditionalCardAttributes(shuffledCards[0]),
-              addAdditionalCardAttributes(shuffledCards[1]),
+              addAdditionalCardAttributes(shuffledCards[0], crypt[i]),
+              addAdditionalCardAttributes(shuffledCards[1], crypt[i]),
             ],
             letters: createLetters(ind.length, verifiers[i], nightmare),
           });
         } else {
-          const card = ind.sort((n1, n2) => n1 - n2)[i];
-
           state.push({
             verifier: verifiers[i],
             nightmare,
-            criteriaCards: [
-              addAdditionalCardAttributes(card),
-            ],
+            criteriaCards: [addAdditionalCardAttributes(ind[i], crypt[i])],
             letters: createLetters(ind.length, verifiers[i], nightmare),
           });
         }
