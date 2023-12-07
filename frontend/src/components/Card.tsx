@@ -4,10 +4,13 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { CriteriaCard } from "hooks/useCriteriaCard";
 import { FC } from "react";
+import VerifierLabel from "./VerifierLabel";
+import CryptCardLabel from "./CryptCardLabel";
 
 type Props = {
   card: Undefinable<CriteriaCard>;
   cardImage: string;
+  verifier: Verifier;
   onToggleCriteria: (criteria: number) => void;
 };
 
@@ -141,7 +144,10 @@ const Card: FC<Props> = (props) => {
           width: "100%",
         }}
       />
-      <Box position="absolute" top={0} display="flex" width={1}></Box>
+      <Box position="absolute" top={0} display="flex" width={1} justifyContent={"space-between"} zIndex={1}>
+        <VerifierLabel verifier={props.verifier} card={props.card}/>
+        {!props?.card?.nightmare && <CryptCardLabel card={props.card?.cryptCard}/>}
+      </Box>
       <Box
         position="absolute"
         bottom={5}

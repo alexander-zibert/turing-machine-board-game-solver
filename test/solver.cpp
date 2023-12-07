@@ -49,3 +49,23 @@ TEST_CASE("test generated problems") {
 
   file.close();
 }
+
+TEST_CASE("test B65 FWE R") {
+  auto game = std::vector<card_t>{};
+  for (const auto card : {7, 10, 14, 18, 19, 22}) {
+    game.push_back(all_cards[card]);
+  }
+  const auto result = solve(game, {
+    query_t{{2, 4, 3}, 'C', false},
+    query_t{{2, 4, 3}, 'D', false},
+    query_t{{2, 4, 3}, 'E', false},
+    query_t{{1, 4, 5}, 'B', false},
+    query_t{{1, 4, 5}, 'E', false},
+    query_t{{1, 4, 5}, 'F', false},
+    query_t{{5, 3, 1}, 'A', true},
+    query_t{{5, 3, 1}, 'C', true},
+    query_t{{5, 3, 1}, 'F', false},
+    }, game_mode_t::classic);
+  CHECK(result.possibleCodes.size() == 1);
+  CHECK(result.possibleCodes.find("251") != result.possibleCodes.end());
+}

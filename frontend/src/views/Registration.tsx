@@ -45,10 +45,12 @@ const Registration: FC = () => {
             const {
               fake,
               ind,
+              crypt,
+              color,
               m,
-            }: { ind: number[]; fake?: number[]; m: number } = data;
+            }: { ind: number[]; fake?: number[]; crypt: number[]; color: number; m: number } = data;
             dispatch(registrationActions.fetchDone());
-            dispatch(commentsActions.setCards({ ind, fake, m }));
+            dispatch(commentsActions.setCards({ ind, fake, crypt, color, m }));
             break;
           default:
             setShowNotFound(true);

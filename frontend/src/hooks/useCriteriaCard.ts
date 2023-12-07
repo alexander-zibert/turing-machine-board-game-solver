@@ -4,10 +4,16 @@ import { Letter, commentsActions } from "store/slices/commentsSlice";
 import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 
+export type CryptCard = {
+  id: number
+  color: number
+}
+
 export type CriteriaCard = {
   id: number;
   criteriaSlots: 1 | 2 | 3 | 4 | 6 | 9;
   irrelevantCriteria: number[];
+  cryptCard?: CryptCard;
   nightmare?: boolean;
 };
 
