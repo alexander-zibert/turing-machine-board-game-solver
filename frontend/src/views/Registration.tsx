@@ -13,11 +13,12 @@ import { registrationActions } from "store/slices/registrationSlice";
 import HashCodeRegistration from "components/HashCodeRegistration";
 import ManualRegistration from "components/ManualRegistration";
 import { Card } from "@mui/material";
+import PasteRegistration from "components/PasteRegistration";
 
 const Registration: FC = () => {
   const dispatch = useAppDispatch();
   const registration = useAppSelector((state) => state.registration);
-  const [registrationMethod, setRegristationMethod] = useState("manual");
+  const [registrationMethod, setRegristationMethod] = useState("paste");
   function changeRegistrationMethod(e: React.ChangeEvent<HTMLInputElement>) {
     setRegristationMethod((e.target as HTMLInputElement).value);
   }
@@ -59,6 +60,7 @@ const Registration: FC = () => {
               control={<Radio />}
               label="Manual"
             />
+            <FormControlLabel value="paste" control={<Radio />} label="Paste" />
             <FormControlLabel
               value="turing-hash"
               control={<Radio />}
@@ -75,6 +77,7 @@ const Registration: FC = () => {
           </Box>
         </Card>
       )}
+      {registrationMethod === "paste" && <PasteRegistration />}
     </Box>
   );
 };
