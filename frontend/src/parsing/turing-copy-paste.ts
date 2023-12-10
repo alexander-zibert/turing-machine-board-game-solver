@@ -1,12 +1,30 @@
 import { range, getColor, parseCode, type ParsedGame } from "./util";
 
-function getCode(parts: string[]) {
-  let start = 0;
-  for (let i = 0; i < parts.length; i += 1) {
-    if (parts[i].startsWith("#")) {
+function getCode(text: string) {
+  let start = null;
+  let currentPart = "";
+  let result = "";
+  for (let i = 0; i < text.length; i += 1) {
+    if (text[i] === "#") {
       start = i;
-    } else if (parts[i].toLowerCase().includes("share")) {
-      return parts.slice(start, i);
+      continue;
+    }
+    if (start === null) {
+      continue;
+    }
+    if (text[i] === " ") {
+      if (currentPart.length > 0 && currentPart.length <= 3) {
+        result += currentPart;
+        currentPart = "";
+        continue;
+      } else {
+        return result || null;
+      }
+    }
+    if (text[i].match(/[A-Z0-9]/)) {
+      currentPart += text[i];
+    } else {
+      return result || null;
     }
   }
   return null;
@@ -79,12 +97,10 @@ function parseNightmareInd(text: string, numVerifiers: number) {
 }
 
 export function parse(text: string): ParsedGame | null {
-  const parts = text.replaceAll(/\s+/g, " ").trim().split(" ");
-  const codeParts = getCode(parts);
-  if (codeParts === null) {
+  const code = getCode(text);
+  if (code === null) {
     return null;
   }
-  const code = codeParts.join("").slice(1).toUpperCase();
   const parsedCode = parseCode(code);
   if (parsedCode === null) {
     return null;
