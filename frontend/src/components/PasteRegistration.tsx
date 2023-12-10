@@ -25,11 +25,11 @@ const PasteRegistration: FC = () => {
 
   function onSubmit() {
     const problem = parseTuringInfo(cardText) || parseProblemBook(cardText);
-    console.log(problem);
     if (problem === null) {
       setShowNotFound(true);
       return;
     }
+    setCardText("");
     dispatch(registrationActions.updateHash(problem.code.toUpperCase()));
     dispatch(roundsActions.reset());
     dispatch(commentsActions.reset());
