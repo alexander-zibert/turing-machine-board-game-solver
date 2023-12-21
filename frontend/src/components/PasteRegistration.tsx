@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import HashIcon from "@mui/icons-material/NumbersRounded";
+import PasteIcon from "@mui/icons-material/ContentPasteGoRounded";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -102,7 +103,8 @@ const PasteRegistration: FC = () => {
         </Alert>
         <Typography>Paste Game Setup</Typography>
         <TextField
-          iconRender={<div />}
+          withStackRadius
+          iconRender={<PasteIcon />}
           value={cardText}
           onChange={(value) => {
             setCardText(value);
