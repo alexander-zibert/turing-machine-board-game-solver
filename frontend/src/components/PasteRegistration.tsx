@@ -103,7 +103,6 @@ const PasteRegistration: FC = () => {
         </Alert>
         <Typography>Paste Game Setup</Typography>
         <TextField
-          withStackRadius
           iconRender={<PasteIcon />}
           value={cardText}
           onChange={(value) => {
