@@ -15,6 +15,7 @@ import { commentsActions } from "store/slices/commentsSlice";
 import { digitCodeActions } from "store/slices/digitCodeSlice";
 import { registrationActions } from "store/slices/registrationSlice";
 import { roundsActions } from "store/slices/roundsSlice";
+import ListIcon from "@mui/icons-material/ListRounded";
 
 function correctCards(cards: number[]) {
   return (
@@ -134,7 +135,7 @@ const ManualRegistration: FC = () => {
         </FormControl>
         <Typography>Enter Cards</Typography>
         <TextField
-          iconRender={<div />}
+          iconRender={<ListIcon />}
           value={cardText}
           onChange={(value) => {
             setCardText(value);

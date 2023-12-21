@@ -44,30 +44,32 @@ const Registration: FC = () => {
         onReset={() => dispatch(registrationActions.updateName(""))}
       />
       {registration.status === "new" && (
-        <FormControl>
-          <FormLabel id="demo-controlled-radio-buttons-group">
-            Game Setup
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={registrationMethod}
-            onChange={changeRegistrationMethod}
-          >
-            <FormControlLabel
-              value="manual"
-              control={<Radio />}
-              label="Manual"
-            />
-            <FormControlLabel value="paste" control={<Radio />} label="Paste" />
-            <FormControlLabel
-              value="turing-hash"
-              control={<Radio />}
-              label="Hashcode"
-            />
-          </RadioGroup>
-        </FormControl>
+        <Box px={2}>
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Game Setup
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={registrationMethod}
+              onChange={changeRegistrationMethod}
+            >
+              <FormControlLabel
+                value="manual"
+                control={<Radio />}
+                label="Manual"
+              />
+              <FormControlLabel value="paste" control={<Radio />} label="Paste" />
+              <FormControlLabel
+                value="turing-hash"
+                control={<Radio />}
+                label="Hashcode"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
       )}
       {registrationMethod === "turing-hash" && <HashCodeRegistration />}
       {registrationMethod === "manual" && registration.status === "new" && (
