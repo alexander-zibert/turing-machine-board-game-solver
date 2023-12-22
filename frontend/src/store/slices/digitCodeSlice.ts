@@ -30,6 +30,23 @@ export const digitCodeSlice = createSlice({
         state.push({ shape, digit, state: "incorrect" });
       }
     },
+    setDigitState: (
+      state,
+      action: PayloadAction<{ shape: Shape; digit: Digit; isValid: boolean }>
+    ) => {
+      const { shape, digit, isValid } = action.payload;
+      const index = state.findIndex(
+        (entry) => entry.shape === shape && entry.digit === digit
+      );
+
+      if (index >= 0) {
+        state.splice(index, 1);
+      }
+
+      if (!isValid) {
+         state.push({ shape, digit, state: "incorrect" });
+      }
+    },
   },
 });
 
