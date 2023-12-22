@@ -14,20 +14,21 @@ export const digitCodeSlice = createSlice({
   reducers: {
     load: (_, action: PayloadAction<DigitCodeState>) => action.payload,
     reset: () => initialState,
-    toggleDigitState: (
+    setDigitState: (
       state,
-      action: PayloadAction<{ shape: Shape; digit: Digit }>
+      action: PayloadAction<{ shape: Shape; digit: Digit; isValid: boolean }>
     ) => {
-      const { shape, digit } = action.payload;
-
+      const { shape, digit, isValid } = action.payload;
       const index = state.findIndex(
         (entry) => entry.shape === shape && entry.digit === digit
       );
 
       if (index >= 0) {
         state.splice(index, 1);
-      } else {
-        state.push({ shape, digit, state: "incorrect" });
+      }
+
+      if (!isValid) {
+         state.push({ shape, digit, state: "incorrect" });
       }
     },
   },
