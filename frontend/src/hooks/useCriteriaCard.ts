@@ -69,10 +69,8 @@ export const criteriaCardPool: CriteriaCard[] = [
 ];
 
 const getCardUrl = (card?: CriteriaCard, language?: string) =>
-  card && language
-    ? `https://turingmachine.info/images/criteriacards/${language}/TM_GameCards_${language}-${(
-        "0" + card.id
-      ).slice(-2)}.png`
+  card?.id && language
+    ? `https://turingmachine.info/images/criteriacards/${language}/TM_GameCards_${language}-${("0" + card.id).slice(-2)}.png`
     : "";
 
 export const useCriteriaCard = (verifier: Verifier, index: number) => {
@@ -98,11 +96,11 @@ export const useCriteriaCard = (verifier: Verifier, index: number) => {
   const dispatch = useAppDispatch();
 
   const toggleCriteria = (criteria: number) => {
-    if (!card) return;
+    if ( !card ) return;
 
     const criteriaIndex = card.irrelevantCriteria.indexOf(criteria);
 
-    if (criteriaIndex === -1) {
+    if ( criteriaIndex === -1 ) {
       setCard({
         ...card,
         irrelevantCriteria: [...card.irrelevantCriteria, criteria],
@@ -125,10 +123,10 @@ export const useCriteriaCard = (verifier: Verifier, index: number) => {
   }, [card]);
 
   const toggleLetter = (verifier: Verifier) => {
-    if (!letters) return;
+    if ( !letters ) return;
     setLetters(
       letters.map((letter: Letter) => {
-        if (letter.letter === verifier) {
+        if ( letter.letter === verifier ) {
           return {
             ...letter,
             isIrrelevant: !letter.isIrrelevant,
