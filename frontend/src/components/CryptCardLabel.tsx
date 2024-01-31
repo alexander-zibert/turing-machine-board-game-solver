@@ -1,6 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { CryptCard } from "../hooks/useCriteriaCard";
+import { VERIFIER_COLORS, VERIFIER_TYPES } from "./constants";
+
 
 type CryptCardProps = {
   card?: CryptCard;
@@ -8,24 +10,26 @@ type CryptCardProps = {
 
 const CryptCardLabel: FC<CryptCardProps> = (props) => {
   const {card} = props;
-  // `${color <= 2 ? "black" : "white"}`  // contrast
+
   return (!card) ? <></> :
     <Typography
-      component="span"
-      fontSize="12px"
-      fontFamily={"Plus Jakarta Sans"}
-      p={0.25}
-      px={1}
       sx={(theme) => ({
+        display: "flex",
+        fontFamily: "Plus Jakarta Sans",
+        fontSize: 12,
+        alignItems: "center",
+        justifyContent: "end",
         color: "black",
-        background: `${["#2db563", "#febc12", "#58b3da", "#7f66ad"][card.color]}`,
-        borderTopRightRadius: "8px",
-        borderBottomLeftRadius: "8px",
+        background: `${VERIFIER_COLORS[card.color]}`,
+        width: "19%",
         height: "min-content",
+        py: 0.25,
+        px: 1,
+        borderRadius: theme.spacing(0, 1, 0, 1),
       })}
     >
-      {card.id}&nbsp;{['◊', '#', '/', '¤'][card.color]}
-    </Typography>
+      {card.id}&nbsp;{VERIFIER_TYPES(card.color, {fontSize: "inherit"})}
+    </Typography>;
 };
 
 export default CryptCardLabel;
