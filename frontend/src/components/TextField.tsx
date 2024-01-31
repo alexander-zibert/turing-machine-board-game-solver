@@ -4,17 +4,18 @@ import IconButton from "@mui/material/IconButton";
 import { alpha, useTheme } from "@mui/material/styles";
 import { FC, ReactNode } from "react";
 
+
 type Props = {
   customFontSize?: string;
   customRadius?: string;
   disabled?: boolean;
-  iconRender?: ReactNode;
+  icon?: ReactNode;
   prefixId?: string;
   maxChars?: number;
   onChange?: (value: string) => void;
   onBlur?: () => void;
   onReset?: () => void;
-  type?: "text" | "number" | "password";
+  type?: "text" | "number";
   value?: Nullable<number | string>;
   withReset?: boolean;
   withStackRadius?: boolean;
@@ -25,32 +26,48 @@ type Props = {
 const TextField: FC<Props> = (props) => {
   const theme = useTheme();
 
+  const sxIconDefaults = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    height: theme.spacing(6),
+    width: theme.spacing(6),
+    top: 0,
+    color: theme.palette.primary.main,
+  };
+
   return (
     <Box
       position="relative"
       sx={
         props.withStackRadius
           ? {
-              "&:not(:last-child)": {
-                mb: 0.5,
+            "&:not(:last-child)": {
+              mb: 0.5,
+            },
+            "&:first-of-type": {
+              input: {
+                borderRadius: theme.spacing(2, 2, 0, 0),
               },
-              "&:first-of-type": {
-                input: {
-                  borderRadius: theme.spacing(2, 2, 0, 0),
-                },
+            },
+            "&:last-child": {
+              input: {
+                borderRadius: theme.spacing(0, 0, 2, 2),
               },
-              "&:last-child": {
-                input: {
-                  borderRadius: theme.spacing(0, 0, 2, 2),
-                },
-              },
-            }
+            },
+          }
           : null
       }
     >
+      {props.icon && (
+        <Box id={"TextField-StartAdornment"} sx={{...sxIconDefaults, left: 0, }}>
+          {props.icon}
+        </Box>
+      )}
       <input
         id={`${props.prefixId}-text-field`}
-        type={props.type}
+        type={props.type || "text"}
         min={props.min || 1}
         max={props.max || 5}
         maxLength={props.maxChars}
@@ -68,37 +85,16 @@ const TextField: FC<Props> = (props) => {
           border: "none",
           borderRadius: props.customRadius,
           color: theme.palette.text.primary,
-          height: 48,
-          paddingLeft: props.iconRender ? theme.spacing(5) : undefined,
-          textAlign: props.iconRender ? undefined : "center",
+          height: theme.spacing(6),
+          paddingLeft: props.icon ? theme.spacing(6) : undefined,
+          paddingRight: props.withReset ? theme.spacing(6) : undefined,
+          textAlign: props.icon ? undefined : "center",
           fontSize: props.customFontSize || theme.spacing(3),
           width: "100%",
         }}
       />
-      {props.iconRender && (
-        <Box
-          alignItems="center"
-          display="flex"
-          height={48}
-          left={0}
-          ml={1}
-          position="absolute"
-          top={0}
-          sx={{ color: theme.palette.primary.main }}
-        >
-          {props.iconRender}
-        </Box>
-      )}
-      {props.value && props.withReset && (
-        <Box
-          alignItems="center"
-          display="flex"
-          height={48}
-          right={4}
-          ml={1}
-          position="absolute"
-          top={0}
-        >
+      {props.value !== undefined && props.withReset && (
+        <Box id={"TextField-EndAdornment"} sx={{...sxIconDefaults, right: 0}}>
           <IconButton
             id={`${props.prefixId}-text-field__clear-button`}
             color="primary"

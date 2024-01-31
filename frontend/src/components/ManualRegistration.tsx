@@ -41,7 +41,7 @@ const ManualRegistration: FC = () => {
       <TextField
         prefixId="manual-registration__hash"
         disabled={true}
-        iconRender={<HashIcon />}
+        icon={<HashIcon />}
         value={registration.hash}
         maxChars={10}
         withStackRadius

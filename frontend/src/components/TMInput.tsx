@@ -105,7 +105,7 @@ const TMInput: FC = () => {
           <Grid container spacing={0.5}>
             <Grid item xs={3}>
               <TextField prefixId="manual-registration__verifier-count"
-                         iconRender={<NumberIcon />}
+                         icon={<NumberIcon />}
                          type="number"
                          min={4} max={6}
                          value={verifierCount}
@@ -114,7 +114,7 @@ const TMInput: FC = () => {
             </Grid>
             <Grid item xs={9}>
               <TextField prefixId="manual-registration__hash"
-                         iconRender={<HashIcon />}
+                         icon={<HashIcon />}
                          value={hash}
                          maxChars={10}
                          onChange={(value) => setHash(value.toUpperCase())}

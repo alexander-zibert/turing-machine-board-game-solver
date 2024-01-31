@@ -42,7 +42,7 @@ const PasteRegistration: FC = () => {
       <TextField
         prefixId="paste-registration__hash"
         disabled={true}
-        iconRender={<HashIcon />}
+        icon={<HashIcon />}
         value={registration.hash}
         maxChars={10}
         withStackRadius
@@ -94,7 +94,7 @@ const PasteRegistration: FC = () => {
           </Alert>
         </Box>
         <TextField
-          iconRender={<PasteIcon />}
+          icon={<PasteIcon />}
           value={cardText}
           onChange={(value) => setCardText(value)}
           withReset={true}

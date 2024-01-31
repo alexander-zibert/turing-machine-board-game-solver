@@ -33,7 +33,7 @@ const Registration: FC = () => {
       <TextField
         prefixId="registration__name"
         disabled={registration.status !== "new"}
-        iconRender={<PersonIcon />}
+        icon={<PersonIcon />}
         withStackRadius
         value={registration.name}
         onChange={(value) => dispatch(registrationActions.updateName(value.toUpperCase()))}
