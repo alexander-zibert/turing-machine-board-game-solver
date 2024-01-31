@@ -13,7 +13,6 @@ type Props = {
   prefixId?: string;
   maxChars?: number;
   onChange?: (value: string) => void;
-  onBlur?: () => void;
   onReset?: () => void;
   type?: "text" | "number";
   value?: Nullable<number | string>;
@@ -74,10 +73,19 @@ const TextField: FC<Props> = (props) => {
         disabled={props.disabled}
         value={props.value === null ? "" : props.value}
         onChange={(event) => {
-          props.onChange && props.onChange(event.target.value);
+          if ( props.type === "number" && event.target.value.length > 1 ) {
+            event.preventDefault();
+          } else {
+            props.onChange && props.onChange(event.target.value);
+          }
         }}
-        onBlur={() => {
-          props.onBlur && props.onBlur();
+        onKeyDown={(event) => {
+          if ( props.type === "number" &&
+            !((Number(event.key) >= (props.min || 1)) && (Number(event.key) <= (props.max || 5))) &&
+            !["Backspace", "Enter", "Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Delete"].includes(event.key)
+          ) {
+            event.preventDefault();
+          }
         }}
         style={{
           ...theme.typography.body1,
