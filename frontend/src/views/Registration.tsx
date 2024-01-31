@@ -20,10 +20,7 @@ import TextField from "../components/TextField";
 const Registration: FC = () => {
   const dispatch = useAppDispatch();
   const registration = useAppSelector((state) => state.registration);
-  const [registrationMethod, setRegristationMethod] = useState("paste");
-  function changeRegistrationMethod(e: React.ChangeEvent<HTMLInputElement>) {
-    setRegristationMethod((e.target as HTMLInputElement).value);
-  }
+  const [registrationMethod, setRegistrationMethod] = useState("paste");
 
   return (
     <Box
@@ -39,14 +36,15 @@ const Registration: FC = () => {
         iconRender={<PersonIcon />}
         withStackRadius
         value={registration.name}
-        onChange={(value) =>
-          dispatch(registrationActions.updateName(value.toUpperCase()))
-        }
+        onChange={(value) => dispatch(registrationActions.updateName(value.toUpperCase()))}
         withReset={registration.status === "new"}
         onReset={() => dispatch(registrationActions.updateName(""))}
       />
       {registration.status === "new" && (
-        <Box px={2}>
+        <Box sx={theme => ({
+          px: 2, pt: 1, pb: 0, mb: 0.5,
+          background: alpha(theme.palette.primary.main, 0.1),
+        })}>
           <FormControl>
             <FormLabel id="demo-controlled-radio-buttons-group">
               Game Setup
@@ -56,19 +54,13 @@ const Registration: FC = () => {
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
               value={registrationMethod}
-              onChange={changeRegistrationMethod}
+              onChange={(event) =>
+                setRegistrationMethod(event.target.value)
+              }
             >
-              <FormControlLabel
-                value="manual"
-                control={<Radio />}
-                label="Manual"
-              />
+              <FormControlLabel value="manual" control={<Radio />} label="Manual" />
               <FormControlLabel value="paste" control={<Radio />} label="Paste" />
-              <FormControlLabel
-                value="turing-hash"
-                control={<Radio />}
-                label="Hashcode"
-              />
+              <FormControlLabel value="turing-hash" control={<Radio />} label="Hashcode" />
             </RadioGroup>
           </FormControl>
         </Box>
