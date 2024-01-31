@@ -1,21 +1,21 @@
-import { Typography } from "@mui/material";
-import Box from "@mui/material/Box";
-import HashIcon from "@mui/icons-material/NumbersRounded";
 import PasteIcon from "@mui/icons-material/ContentPasteGoRounded";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
+import HashIcon from "@mui/icons-material/NumbersRounded";
+import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import { alpha, useTheme } from "@mui/material/styles";
+import Snackbar from "@mui/material/Snackbar";
+import { useTheme } from "@mui/material/styles";
 import TextField from "components/TextField";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { useAppSelector } from "hooks/useAppSelector";
+import { parse as parseProblemBook } from "parsing/problem-book";
+import { parse as parseTuringInfo } from "parsing/turing-copy-paste";
 import { FC, useState } from "react";
 import { commentsActions } from "store/slices/commentsSlice";
 import { digitCodeActions } from "store/slices/digitCodeSlice";
 import { registrationActions } from "store/slices/registrationSlice";
 import { roundsActions } from "store/slices/roundsSlice";
-import { parse as parseTuringInfo } from "parsing/turing-copy-paste";
-import { parse as parseProblemBook } from "parsing/problem-book";
+import StartGameButton from "./StartGameButton";
+
 
 const PasteRegistration: FC = () => {
   const dispatch = useAppDispatch();
@@ -113,28 +113,7 @@ const PasteRegistration: FC = () => {
             setCardText("");
           }}
         />
-
-        <Box pt={0.5}>
-          <Button
-            aria-label="search"
-            disabled={cardText === ""}
-            fullWidth
-            size="large"
-            type="submit"
-            sx={(theme) => ({
-              background: alpha(theme.palette.primary.main, 0.1),
-              borderRadius: theme.spacing(0, 0, 2, 2),
-              fontFamily: "Kalam",
-              fontSize: 24,
-              height: theme.spacing(6),
-              "&:hover": {
-                background: alpha(theme.palette.primary.main, 0.2),
-              },
-            })}
-          >
-            Start Game
-          </Button>
-        </Box>
+          <StartGameButton disabled={cardText === ""} />
       </form>
     </>
   );

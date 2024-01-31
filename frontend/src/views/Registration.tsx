@@ -1,19 +1,21 @@
 import PersonIcon from "@mui/icons-material/PersonRounded";
+import { alpha } from "@mui/material";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import TextField from "components/TextField";
-import { useAppDispatch } from "hooks/useAppDispatch";
-import { useAppSelector } from "hooks/useAppSelector";
-import { FC, useState } from "react";
-import { registrationActions } from "store/slices/registrationSlice";
 import HashCodeRegistration from "components/HashCodeRegistration";
 import ManualRegistration from "components/ManualRegistration";
-import { Card } from "@mui/material";
 import PasteRegistration from "components/PasteRegistration";
+import { TMInputProvider } from "components/TMInput";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { useAppSelector } from "hooks/useAppSelector";
+import React, { FC, useState } from "react";
+import { registrationActions } from "store/slices/registrationSlice";
+import TextField from "../components/TextField";
+
 
 const Registration: FC = () => {
   const dispatch = useAppDispatch();
@@ -72,13 +74,7 @@ const Registration: FC = () => {
         </Box>
       )}
       {registrationMethod === "turing-hash" && <HashCodeRegistration />}
-      {registrationMethod === "manual" && registration.status === "new" && (
-        <Card>
-          <Box m={2}>
-            <ManualRegistration />
-          </Box>
-        </Card>
-      )}
+      {registrationMethod === "manual" && <TMInputProvider><ManualRegistration /></TMInputProvider>}
       {registrationMethod === "paste" && <PasteRegistration />}
     </Box>
   );
