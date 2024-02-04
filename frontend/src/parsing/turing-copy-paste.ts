@@ -1,4 +1,10 @@
-import { range, getColor, parseCode, type ParsedGame } from "./util";
+import {
+  range,
+  getColor,
+  parseCode,
+  type ParsedGame,
+  getCryptCards,
+} from "./util";
 
 function getCode(text: string) {
   let start = null;
@@ -55,21 +61,36 @@ function extremeRegex(verifier: number) {
   );
 }
 
-function parseExtremeMatch(match: string[]) {
-  const ind: number[] = [];
-  const fake: number[] = [];
-  const crypt: number[] = [];
-  const validMatches = match.filter((el) => el !== undefined);
-  for (let i = 0; i < validMatches.length; i += 1) {
-    if (i % 4 === 1) {
-      ind.push(Number(validMatches[i]));
-    } else if (i % 4 === 2) {
-      fake.push(Number(validMatches[i]));
-    } else if (i % 4 === 3) {
-      crypt.push(Number(validMatches[i]));
-    }
+// fallback parsing if the criteria cards are sorted in descending order and it is a three digit number
+function extremeRegex2(verifier: number) {
+  return (
+    String.fromCharCode(65 + verifier) + "((\\d{2})(\\d))(\\d{3})(?![0-9])"
+  );
+}
+
+function parseExtremeCardMatch(match: string[] | null) {
+  if (!match) {
+    return null;
   }
-  return { ind, fake, crypt };
+  const validMatches: string[] = match.filter((el) => el !== undefined);
+  const numbers = validMatches.slice(2).map(Number);
+  if (!isValidExtremeCard(numbers)) {
+    return null;
+  }
+  return numbers.map(Number);
+}
+
+function isValidExtremeCard(match: number[]) {
+  const [ind, fake, crypt] = match;
+  const indCryptCards = getCryptCards(ind);
+  if (indCryptCards === null) {
+    return false;
+  }
+  const fakeCryptCards = getCryptCards(fake);
+  if (fakeCryptCards === null) {
+    return false;
+  }
+  return indCryptCards.includes(crypt) || fakeCryptCards.includes(crypt);
 }
 
 function nightmareCryptRegex(verifier: number) {
@@ -124,13 +145,25 @@ export function parse(text: string): ParsedGame | null {
     return { ind, crypt, color, m: mode, code };
   } else if (mode === 1) {
     // EXTREME
-    const match = textWithoutSpaces.match(
-      new RegExp(range(0, numVerifiers).map(extremeRegex).join(""))
-    );
-    if (!match) {
-      return null;
+    const ind = [];
+    const fake = [];
+    const crypt = [];
+    for (let i = 0; i < numVerifiers; i += 1) {
+      const match = textWithoutSpaces.match(new RegExp(extremeRegex(i)));
+      let parsedMatch = parseExtremeCardMatch(match);
+      if (!parsedMatch) {
+        const match2 = textWithoutSpaces.match(new RegExp(extremeRegex2(i)));
+        parsedMatch = parseExtremeCardMatch(match2);
+      }
+      if (!parsedMatch) {
+        return null;
+      }
+
+      ind.push(parsedMatch[0]);
+      fake.push(parsedMatch[1]);
+      crypt.push(parsedMatch[2]);
     }
-    const { ind, fake, crypt } = parseExtremeMatch(match.slice(1));
+
     const color = getColor(crypt[0]);
     if (color === null) {
       return null;

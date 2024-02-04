@@ -127,3 +127,33 @@ test("all languages work", () => {
     });
   }
 });
+
+test("E47 M9C", () => {
+  expect(
+    parse(
+      `logoTM Solo/Co-op Extreme Mode: see rulebook page 3 #E47 M9C Share Get Criteria and Verification cards in the box. A 253 346 B 124 614 C 195 233 D 2017 741 Back to Homepage`
+    )
+  ).toStrictEqual({
+    ind: [25, 12, 19, 20],
+    fake: [3, 4, 5, 17],
+    crypt: [346, 614, 233, 741],
+    color: 0,
+    m: 1,
+    code: "E47M9C",
+  });
+});
+
+test("E49 R6K", () => {
+  expect(
+    parse(
+      `logoTM Solo/Co-op Extreme Mode: see rulebook page 3 #E49 R6K Share Get Criteria and Verification cards in the box. A 1815 220 B 812 455 C 214 670 D 1310 632 Back to Homepage`
+    )
+  ).toStrictEqual({
+    ind: [18, 8, 21, 13],
+    fake: [15, 12, 4, 10],
+    crypt: [220, 455, 670, 632],
+    color: 0,
+    m: 1,
+    code: "E49R6K",
+  });
+});
