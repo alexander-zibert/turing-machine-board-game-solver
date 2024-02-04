@@ -173,7 +173,7 @@ export async function getPossibleCodes(comments: CommentsState) {
     }
     possibleVerifiers.push(current);
   }
-  console.log(cards, possibleVerifiers);
+  // console.log(cards, possibleVerifiers);
 
   return waitForWorker({
     type: "get_possible_codes",
