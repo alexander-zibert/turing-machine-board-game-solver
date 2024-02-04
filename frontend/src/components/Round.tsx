@@ -47,7 +47,7 @@ const Round: FC<Props> = ({ round, index }) => {
                   })
                 );
               }}
-              iconRender={
+              icon={
                 <ShapeIcon
                   shape={code.shape as "triangle" | "square" | "circle"}
                   sizeMultiplier={0.5}

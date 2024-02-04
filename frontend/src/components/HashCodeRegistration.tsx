@@ -90,7 +90,7 @@ const HashCodeRegistration: FC = () => {
         </Alert>
       </Snackbar>
       {registration.status === "new" && (
-        <Box pt={0.5} pb={0.5}>
+        <Box pt={0.5} pb={1}>
           <Alert severity="warning">
             Starting a game by hashcode might be broken at the moment. If you
             encounter an error, please use the manual method.
@@ -104,14 +104,12 @@ const HashCodeRegistration: FC = () => {
         }}
       >
         <TextField
-          prefixId="registration__hash"
+          prefixId="hashcode-registration__hash"
           disabled={registration.status !== "new"}
-          iconRender={<HashIcon />}
+          icon={<HashIcon />}
           value={registration.hash}
           maxChars={10}
-          onChange={(value) =>
-            dispatch(registrationActions.updateHash(value.toUpperCase()))
-          }
+          onChange={(value) => dispatch(registrationActions.updateHash(value.toUpperCase()))}
           withReset={registration.status === "new"}
           onReset={() => dispatch(registrationActions.updateHash(""))}
           customRadius={
@@ -128,7 +126,7 @@ const HashCodeRegistration: FC = () => {
               fullWidth
               size="large"
               type="submit"
-              sx={(theme) => ({
+              sx={{
                 background: alpha(theme.palette.primary.main, 0.1),
                 borderRadius: theme.spacing(0, 0, 2, 2),
                 fontFamily: "Kalam",
@@ -137,7 +135,7 @@ const HashCodeRegistration: FC = () => {
                 "&:hover": {
                   background: alpha(theme.palette.primary.main, 0.2),
                 },
-              })}
+              }}
             >
               {registration.status === "ready" ? (
                 <OkIcon />
