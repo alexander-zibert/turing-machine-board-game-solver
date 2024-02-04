@@ -1,14 +1,14 @@
 import HashIcon from "@mui/icons-material/NumbersRounded";
 import Box from "@mui/material/Box";
+import TextField from "components/TextField";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { useAppSelector } from "hooks/useAppSelector";
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { commentsActions } from "store/slices/commentsSlice";
 import { digitCodeActions } from "store/slices/digitCodeSlice";
 import { registrationActions } from "store/slices/registrationSlice";
 import { roundsActions } from "store/slices/roundsSlice";
 import StartGameButton from "./StartGameButton";
-import TextField from "./TextField";
 import TMInput, { TMInputContext } from "./TMInput";
 
 

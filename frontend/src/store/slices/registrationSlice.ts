@@ -17,7 +17,10 @@ export const registrationSlice = createSlice({
   initialState,
   reducers: {
     load: (_, action: PayloadAction<RegistrationState>) => action.payload,
-    reset: () => initialState,
+    reset: (state) => {
+      state.hash = "";
+      state.status = "new";
+    },
     fetch: (state) => ({
       ...state,
       status: "fetch",

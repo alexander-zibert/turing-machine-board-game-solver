@@ -9,7 +9,6 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
     "@reduxjs/toolkit": "^1.9.3",
-    "axios": "^1.5.0",
     "react": "^18.2.0",
     "react-circle-flags": "^0.0.20",
     "react-dom": "^18.2.0",

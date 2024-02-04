@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import Snackbar from "@mui/material/Snackbar";
 import { alpha, useTheme } from "@mui/material/styles";
-import axios from "axios";
 import TextField from "components/TextField";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { useAppSelector } from "hooks/useAppSelector";
@@ -27,13 +26,8 @@ const HashCodeRegistration: FC = () => {
   const onSubmit = () => {
     dispatch(registrationActions.fetch());
 
-    axios
-      .get(process.env.REACT_APP_API_END_POINT, {
-        params: {
-          h: registration.hash,
-        },
-      })
-      .then((response) => response.data)
+    fetch(`${process.env.REACT_APP_API_END_POINT}?h=${registration.hash}`)
+      .then((response) => response.json())
       .then((data: any) => {
         dispatch(roundsActions.reset());
         dispatch(commentsActions.reset());
