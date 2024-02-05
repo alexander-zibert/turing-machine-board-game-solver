@@ -552,7 +552,7 @@ export type VerifierCard = {
 
 const verifierCards = (() => {
   const cards: VerifierCard[] = [];
-  CHECK_CARDS.forEach((value, color) => value.forEach((value) =>
-    cards.push({colorId: color, cryptId: value} as VerifierCard)));
+  CHECK_CARDS.forEach((value, color) => value.filter(value => value)
+    .forEach((value) => cards.push({colorId: color, cryptId: value} as VerifierCard)));
   return cards;
 })();
