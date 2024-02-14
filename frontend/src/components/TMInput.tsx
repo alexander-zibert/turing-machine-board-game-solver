@@ -190,7 +190,23 @@ const CardInput: FC<CardInputProps> = (props) => {
         }
       }}
       renderInput={(params) => (
-        <MuiTextField {...params} />
+        <MuiTextField {...params} type={"number"} sx={{
+          // set type to number, to show number input on mobiles,
+          // and remove the spinners on input via css
+          input: {
+            "&[type=number]": {
+              "-moz-appearance": "textfield",
+            },
+            "&::-webkit-outer-spin-button": {
+              "-webkit-appearance": "none",
+              margin: 0,
+            },
+            "&::-webkit-inner-spin-button": {
+              "-webkit-appearance": "none",
+              margin: 0,
+            },
+          },
+        }} />
       )}
       ChipProps={{
         sx: {
